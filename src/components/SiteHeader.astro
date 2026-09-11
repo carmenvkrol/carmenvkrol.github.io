@@ -1,0 +1,250 @@
+---
+import { navItems, site } from '../site';
+
+const path = Astro.url.pathname;
+
+function isCurrent(href: string): boolean {
+  if (href === '/') return path === '/';
+  return path.startsWith(href);
+}
+---
+
+<header class="site-header">
+  <div class="page site-header__inner">
+    <a href="/" class="site-header__brand">
+      {site.name}
+      <span class="site-header__role">{site.tagline}</span>
+    </a>
+
+    <!--
+      Rendered hidden and revealed by the script below. With JavaScript
+      unavailable the button never appears and the full list stays visible,
+      so navigation always works.
+    -->
+    <button
+      id="nav-toggle"
+      class="nav-toggle"
+      type="button"
+      aria-expanded="false"
+      aria-controls="site-nav"
+      hidden
+    >
+      <span class="nav-toggle__bars" aria-hidden="true"></span>
+      Menu
+    </button>
+
+    <nav id="site-nav" class="site-nav" aria-label="Main">
+      <ul role="list" class="site-nav__list">
+        {
+          navItems.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                aria-current={isCurrent(item.href) ? 'page' : undefined}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    border-block-end: 1px solid var(--rule);
+    background-color: var(--ground);
+  }
+
+  .site-header__inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-s);
+    padding-block: var(--space-s);
+  }
+
+  .site-header__brand {
+    display: flex;
+    flex-direction: column;
+    color: var(--ink);
+    font-weight: 700;
+    font-size: var(--step-1);
+    line-height: 1.2;
+    text-decoration: none;
+  }
+
+  .site-header__brand:hover {
+    color: var(--accent);
+  }
+
+  .site-header__role {
+    font-size: var(--step--1);
+    font-weight: 400;
+    letter-spacing: 0;
+    color: var(--muted);
+  }
+
+  .site-nav__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs) var(--space-m);
+  }
+
+  .site-nav a {
+    display: flex;
+    align-items: center;
+    /* SC 2.5.8 Target Size (Minimum) — 24px is the floor, not the goal. */
+    min-block-size: max(var(--target-min), 2.5rem);
+    color: var(--ink);
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .site-nav a:hover {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 0.3em;
+  }
+
+  /* The current page is marked structurally with aria-current, and the
+     underline is keyed off that attribute — so the visual state and the
+     announced state cannot drift apart. */
+  .site-nav a[aria-current='page'] {
+    color: var(--accent);
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.3em;
+  }
+
+  .nav-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2xs);
+    min-block-size: max(var(--target-min), 2.75rem);
+    padding-inline: var(--space-s);
+    background-color: transparent;
+    color: var(--ink);
+    font-weight: 600;
+    border: 1px solid var(--edge);
+    border-radius: var(--radius);
+    cursor: pointer;
+  }
+
+  .nav-toggle[hidden] {
+    display: none;
+  }
+
+  .nav-toggle:hover {
+    background-color: var(--sunken);
+  }
+
+  .nav-toggle__bars,
+  .nav-toggle__bars::before,
+  .nav-toggle__bars::after {
+    display: block;
+    inline-size: 1.05rem;
+    block-size: 2px;
+    background-color: currentColor;
+  }
+
+  .nav-toggle__bars {
+    position: relative;
+  }
+
+  .nav-toggle__bars::before,
+  .nav-toggle__bars::after {
+    content: '';
+    position: absolute;
+    inset-inline-start: 0;
+  }
+
+  .nav-toggle__bars::before {
+    inset-block-start: -6px;
+  }
+  .nav-toggle__bars::after {
+    inset-block-start: 6px;
+  }
+
+  /* Collapsed state only applies once the script has taken over, which is
+     what `data-collapsible` signals. Without JS the nav is never hidden. */
+  @media (width < 46rem) {
+    .site-nav[data-collapsible='true'][hidden] {
+      display: none;
+    }
+
+    .site-nav[data-collapsible='true'] {
+      flex-basis: 100%;
+    }
+
+    .site-nav[data-collapsible='true'] .site-nav__list {
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .site-nav[data-collapsible='true'] .site-nav__list li + li {
+      border-block-start: 1px solid var(--rule);
+    }
+  }
+</style>
+
+<script>
+  // Progressive enhancement: the markup above is already a working navigation.
+  // This turns it into a disclosure on narrow viewports and nothing else.
+  const toggle = document.getElementById('nav-toggle');
+  const nav = document.getElementById('site-nav');
+
+  if (toggle && nav) {
+    const NARROW = window.matchMedia('(width < 46rem)');
+
+    const setExpanded = (expanded: boolean): void => {
+      toggle.setAttribute('aria-expanded', String(expanded));
+      nav.hidden = !expanded;
+    };
+
+    const applyMode = (): void => {
+      if (NARROW.matches) {
+        toggle.hidden = false;
+        nav.dataset.collapsible = 'true';
+        setExpanded(false);
+      } else {
+        // Wide viewport: tear the disclosure down completely rather than
+        // leaving a hidden control in the tab order.
+        toggle.hidden = true;
+        delete nav.dataset.collapsible;
+        nav.hidden = false;
+        toggle.setAttribute('aria-expanded', 'false');
+      }
+    };
+
+    toggle.addEventListener('click', () => {
+      setExpanded(toggle.getAttribute('aria-expanded') !== 'true');
+    });
+
+    // Escape closes and returns focus to the control that opened it, so the
+    // keyboard user is never stranded somewhere they cannot see.
+    document.addEventListener('keydown', (event: KeyboardEvent) => {
+      if (event.key !== 'Escape') return;
+      if (toggle.getAttribute('aria-expanded') !== 'true') return;
+      setExpanded(false);
+      toggle.focus();
+    });
+
+    // Focus leaving the header closes it, which covers Tab-out as well as
+    // clicks elsewhere — without trapping focus inside a menu that is only
+    // four links long.
+    document.addEventListener('focusin', (event: FocusEvent) => {
+      if (toggle.getAttribute('aria-expanded') !== 'true') return;
+      const target = event.target as Node | null;
+      if (target && !nav.contains(target) && target !== toggle) {
+        setExpanded(false);
+      }
+    });
+
+    NARROW.addEventListener('change', applyMode);
+    applyMode();
+  }
+</script>

@@ -1,0 +1,175 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site, formatDate, isoDate } from '../site';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
+
+/**
+ * PLACEHOLDER CONTENT.
+ *
+ * These three cards are the experiment. Replace each with a service someone
+ * could actually buy — specific enough that a stranger knows whether it is
+ * for them. At least one should be attached to a deadline, since that is
+ * what makes people act. See the build plan.
+ */
+const offers = [
+  {
+    title: 'Placeholder — offer one',
+    body: 'Name a concrete piece of work: what you do, who it is for, and what they get at the end. Two sentences.',
+  },
+  {
+    title: 'Placeholder — offer two',
+    body: 'Ideally the deadline-driven one. A pre-launch review, or remediation before a compliance date.',
+  },
+  {
+    title: 'Placeholder — offer three',
+    body: 'Something you would enjoy doing repeatedly. The point is to find work worth having.',
+  },
+];
+---
+
+<BaseLayout
+  title={`${site.name} — ${site.tagline}`}
+  description="Carmen Krol builds and audits accessible interfaces. Ten years of UI engineering, focused on WCAG 2.2 conformance, remediation and design systems."
+  bareTitle
+>
+  <div class="page">
+    <section class="hero region" aria-labelledby="hero-heading">
+      <p class="eyebrow">Accessibility engineering</p>
+      <h1 id="hero-heading">
+        I build interfaces that work for everyone — and fix the ones that
+        don&rsquo;t.
+      </h1>
+      <p class="hero__lede">
+        Ten years as a UI engineer, now focused on accessibility: auditing
+        against {site.wcagTarget}, remediating real codebases, and helping
+        product teams build components they can trust.
+      </p>
+      <p class="hero__actions">
+        <a class="button" href="/contact/">Start a conversation</a>
+        <a class="button button--quiet" href="/blog/">Read the blog</a>
+      </p>
+    </section>
+
+    <section class="region" aria-labelledby="offers-heading">
+      <h2 id="offers-heading">How I can help</h2>
+      <p class="prose text-muted">
+        Placeholder copy — replace before launch.
+      </p>
+      <ul role="list" class="card-grid offers">
+        {
+          offers.map((offer) => (
+            <li class="card">
+              <h3>{offer.title}</h3>
+              <p>{offer.body}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <section class="region" aria-labelledby="proof-heading">
+      <h2 id="proof-heading">This site is the work sample</h2>
+      <div class="prose">
+        <p>
+          Everything here is hand-built: no component library, no utility CSS
+          framework, no purchased theme. Every page is checked against
+          axe-core in CI on every pull request, and every release gets a
+          manual pass with a keyboard and a screen reader before it ships.
+        </p>
+        <p>
+          Automated tooling catches roughly a third of accessibility issues,
+          so a clean axe run is a starting point rather than a conformance
+          claim. What the site currently fails, and why, is written down on
+          the <a href="/accessibility/">accessibility statement</a> — and
+          the <a href={site.repoUrl} rel="noopener">source is public</a> if
+          you would rather read it than take my word for it.
+        </p>
+      </div>
+    </section>
+
+    {
+      posts.length > 0 && (
+        <section class="region" aria-labelledby="writing-heading">
+          <h2 id="writing-heading">Recent writing</h2>
+          <ul role="list" class="post-list">
+            {posts.map((post) => (
+              <li class="post-list__item">
+                <h3>
+                  <a href={`/blog/${post.id}/`}>{post.data.title}</a>
+                </h3>
+                <p class="post-list__meta">
+                  <time datetime={isoDate(post.data.pubDate)}>
+                    {formatDate(post.data.pubDate)}
+                  </time>
+                </p>
+                <p>{post.data.description}</p>
+              </li>
+            ))}
+          </ul>
+          <p>
+            <a href="/blog/">All posts</a>
+          </p>
+        </section>
+      )
+    }
+  </div>
+</BaseLayout>
+
+<style>
+  /* One rule per element for inline size. Two rules competing over the same
+     property on the same selector is how spacing silently unravels. */
+  .hero {
+    max-inline-size: min(100%, 56ch);
+  }
+
+  .hero h1 {
+    margin-block: var(--space-2xs) var(--space-s);
+  }
+
+  .hero__lede {
+    font-size: var(--step-1);
+    color: var(--muted);
+  }
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-s);
+    margin-block-start: var(--space-m);
+  }
+
+  .offers {
+    margin-block-start: var(--space-m);
+  }
+
+  .post-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-m);
+    margin-block: var(--space-m);
+    max-inline-size: var(--measure);
+  }
+
+  .post-list__item h3 {
+    font-size: var(--step-1);
+  }
+
+  .post-list__item h3 a {
+    color: var(--ink);
+    text-decoration-color: var(--edge);
+  }
+
+  .post-list__item h3 a:hover {
+    color: var(--accent);
+  }
+
+  .post-list__meta {
+    font-size: var(--step--1);
+    color: var(--muted);
+    margin-block: var(--space-3xs);
+  }
+</style>

@@ -1,0 +1,426 @@
+---
+import { site } from '../site';
+
+/**
+ * Contact form.
+ *
+ * Works with JavaScript disabled: it is a plain form that POSTs to Web3Forms
+ * and returns the visitor to /contact/success/. With JavaScript it validates
+ * in place, submits in the background, and never loses what was typed.
+ *
+ * Deliberately no CAPTCHA. Spam is handled by the honeypot field below plus
+ * Web3Forms' server-side filtering.
+ */
+---
+
+<form
+  id="contact-form"
+  class="contact-form"
+  action="https://api.web3forms.com/submit"
+  method="POST"
+  novalidate
+>
+  <input type="hidden" name="access_key" value={site.web3formsAccessKey} />
+  <input type="hidden" name="subject" value="New enquiry from carmenkrol.com" />
+  <input type="hidden" name="from_name" value="carmenkrol.com" />
+  <input type="hidden" name="redirect" value={`${site.url}/contact/success/`} />
+
+  <!--
+    Honeypot. Web3Forms rejects any submission where this is checked.
+    aria-hidden plus tabindex="-1" keeps it away from assistive technology
+    and the keyboard, so it is invisible to people and visible to bots.
+  -->
+  <label class="honeypot" aria-hidden="true">
+    Leave this field empty
+    <input type="checkbox" name="botcheck" tabindex="-1" />
+  </label>
+
+  <div
+    id="form-errors"
+    class="error-summary"
+    tabindex="-1"
+    hidden
+  >
+    <h2 class="error-summary__title">There is a problem</h2>
+    <ul role="list" id="form-errors-list" class="error-summary__list"></ul>
+  </div>
+
+  <div class="field">
+    <label for="name">
+      Your name <span class="field__required">(required)</span>
+    </label>
+    <input
+      type="text"
+      id="name"
+      name="name"
+      autocomplete="name"
+      required
+      aria-describedby="name-error"
+    />
+    <p class="field__error" id="name-error" hidden></p>
+  </div>
+
+  <div class="field">
+    <label for="email">
+      Email address <span class="field__required">(required)</span>
+    </label>
+    <p class="field__hint" id="email-hint">
+      So I can reply. Nothing else is ever sent to it.
+    </p>
+    <input
+      type="email"
+      id="email"
+      name="email"
+      autocomplete="email"
+      required
+      aria-describedby="email-hint email-error"
+    />
+    <p class="field__error" id="email-error" hidden></p>
+  </div>
+
+  <div class="field">
+    <label for="organization">
+      Organisation <span class="field__optional">(optional)</span>
+    </label>
+    <input
+      type="text"
+      id="organization"
+      name="organization"
+      autocomplete="organization"
+    />
+  </div>
+
+  <div class="field">
+    <label for="message">
+      How can I help? <span class="field__required">(required)</span>
+    </label>
+    <p class="field__hint" id="message-hint">
+      A sentence or two about the product, the team, and any deadline you are
+      working towards.
+    </p>
+    <textarea
+      id="message"
+      name="message"
+      rows="6"
+      required
+      aria-describedby="message-hint message-error"></textarea>
+    <p class="field__error" id="message-error" hidden></p>
+  </div>
+
+  <div class="contact-form__actions">
+    <!--
+      Never disabled while sending. A disabled control drops out of the
+      accessibility tree and out of the tab order; the status region beside
+      it carries the state instead.
+    -->
+    <button type="submit" class="button">Send message</button>
+    <p id="form-status" class="contact-form__status" role="status"></p>
+  </div>
+</form>
+
+<div id="form-success" class="form-success" tabindex="-1" hidden>
+  <h2>Thank you — your message is on its way</h2>
+  <p>
+    I read everything that comes through here and usually reply within two
+    working days. If you would rather email directly, I am at
+    <a href={`mailto:${site.email}`}>{site.email}</a>.
+  </p>
+</div>
+
+<style>
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-m);
+    max-inline-size: var(--measure);
+  }
+
+  .honeypot {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3xs);
+  }
+
+  .field label {
+    font-weight: 600;
+  }
+
+  .field__required,
+  .field__optional {
+    font-weight: 400;
+    color: var(--muted);
+  }
+
+  .field__hint {
+    font-size: var(--step--1);
+    color: var(--muted);
+    margin: 0;
+  }
+
+  .field input,
+  .field textarea {
+    /* SC 1.4.11: the border is a component boundary and needs 3:1. */
+    border: 1px solid var(--edge);
+    border-radius: var(--radius);
+    background-color: var(--surface);
+    padding: var(--space-2xs) var(--space-xs);
+    min-block-size: 2.75rem;
+    inline-size: 100%;
+  }
+
+  .field textarea {
+    min-block-size: 8rem;
+    resize: vertical;
+    font-family: inherit;
+  }
+
+  /* State is keyed off aria-invalid, so the red border cannot appear without
+     the attribute that tells a screen reader the same thing. Colour is never
+     the only signal — the message below the field carries the meaning. */
+  .field :is(input, textarea)[aria-invalid='true'] {
+    border-color: var(--danger);
+    border-inline-start-width: 4px;
+  }
+
+  .field__error {
+    font-size: var(--step--1);
+    font-weight: 600;
+    color: var(--danger);
+    margin: 0;
+  }
+
+  .field__error[hidden] {
+    display: none;
+  }
+
+  .error-summary {
+    padding: var(--space-m);
+    border: 2px solid var(--danger);
+    border-radius: var(--radius);
+    background-color: var(--sunken);
+  }
+
+  .error-summary[hidden] {
+    display: none;
+  }
+
+  .error-summary__title {
+    font-size: var(--step-1);
+    color: var(--danger);
+    margin-block-end: var(--space-2xs);
+  }
+
+  .error-summary__list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3xs);
+  }
+
+  .error-summary__list a {
+    font-weight: 600;
+  }
+
+  .contact-form__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-s);
+  }
+
+  .contact-form__status:empty {
+    display: none;
+  }
+
+  .contact-form__status {
+    margin: 0;
+    font-weight: 600;
+    color: var(--muted);
+  }
+
+  .form-success {
+    max-inline-size: var(--measure);
+    padding: var(--space-m);
+    border: 1px solid var(--edge);
+    border-radius: var(--radius);
+    background-color: var(--sunken);
+  }
+
+  .form-success[hidden] {
+    display: none;
+  }
+
+  .form-success h2 {
+    font-size: var(--step-2);
+    margin-block-end: var(--space-2xs);
+  }
+</style>
+
+<script>
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
+  const summary = document.getElementById('form-errors');
+  const summaryList = document.getElementById('form-errors-list');
+  const status = document.getElementById('form-status');
+  const success = document.getElementById('form-success');
+
+  if (form && summary && summaryList && status && success) {
+    const loadedAt = Date.now();
+
+    type Rule = { id: string; label: string; validate: (value: string) => string | null };
+
+    const required = (label: string) => (value: string): string | null =>
+      value.trim() === '' ? `Enter ${label}` : null;
+
+    const rules: Rule[] = [
+      { id: 'name', label: 'your name', validate: required('your name') },
+      {
+        id: 'email',
+        label: 'your email address',
+        validate: (value) => {
+          if (value.trim() === '') return 'Enter your email address';
+          // Deliberately permissive. Over-strict email patterns reject valid
+          // addresses, and the only real test is whether a reply arrives.
+          if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim())) {
+            return 'Enter an email address in the format name@example.com';
+          }
+          return null;
+        },
+      },
+      {
+        id: 'message',
+        label: 'your message',
+        validate: (value) => {
+          if (value.trim() === '') return 'Enter a message';
+          if (value.trim().length < 10) {
+            return 'Your message is very short — add a little more detail';
+          }
+          return null;
+        },
+      },
+    ];
+
+    const setFieldError = (id: string, message: string | null): void => {
+      const input = document.getElementById(id) as
+        | HTMLInputElement
+        | HTMLTextAreaElement
+        | null;
+      const errorEl = document.getElementById(`${id}-error`);
+      if (!input || !errorEl) return;
+
+      if (message) {
+        input.setAttribute('aria-invalid', 'true');
+        // "Error:" is in the DOM rather than a CSS ::before, because
+        // generated content is not announced reliably across screen readers —
+        // and because sighted users benefit from the word too.
+        errorEl.textContent = `Error: ${message}`;
+        errorEl.hidden = false;
+      } else {
+        input.removeAttribute('aria-invalid');
+        errorEl.textContent = '';
+        errorEl.hidden = true;
+      }
+    };
+
+    const showSummary = (errors: { id: string; message: string }[]): void => {
+      summaryList.replaceChildren();
+      for (const error of errors) {
+        const li = document.createElement('li');
+        const link = document.createElement('a');
+        link.href = `#${error.id}`;
+        link.textContent = error.message;
+        // Move focus to the field rather than only scrolling to it.
+        link.addEventListener('click', (event) => {
+          event.preventDefault();
+          document.getElementById(error.id)?.focus();
+        });
+        li.append(link);
+        summaryList.append(li);
+      }
+      summary.hidden = false;
+      summary.focus();
+    };
+
+    const validate = (): { id: string; message: string }[] => {
+      const errors: { id: string; message: string }[] = [];
+      for (const rule of rules) {
+        const input = document.getElementById(rule.id) as
+          | HTMLInputElement
+          | HTMLTextAreaElement
+          | null;
+        if (!input) continue;
+        const message = rule.validate(input.value);
+        setFieldError(rule.id, message);
+        if (message) errors.push({ id: rule.id, message });
+      }
+      return errors;
+    };
+
+    // Re-validate a field once it has been marked invalid, so the error
+    // clears as soon as it is fixed rather than only on the next submit.
+    for (const rule of rules) {
+      const input = document.getElementById(rule.id);
+      input?.addEventListener('blur', () => {
+        if (input.getAttribute('aria-invalid') === 'true') {
+          setFieldError(rule.id, rule.validate((input as HTMLInputElement).value));
+        }
+      });
+    }
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      status.textContent = '';
+
+      const errors = validate();
+      if (errors.length > 0) {
+        showSummary(errors);
+        return;
+      }
+      summary.hidden = true;
+
+      // Timing check. No person completes four fields in under a second and
+      // a half; plenty of bots do. Generous enough never to catch a human.
+      if (Date.now() - loadedAt < 1500) {
+        showSummary([
+          { id: 'name', message: 'That was submitted unusually fast — please try again' },
+        ]);
+        return;
+      }
+
+      status.textContent = 'Sending your message…';
+
+      try {
+        const response = await fetch(form.action, {
+          method: 'POST',
+          headers: { Accept: 'application/json' },
+          body: new FormData(form),
+        });
+
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+        form.hidden = true;
+        success.hidden = false;
+        success.focus();
+      } catch {
+        status.textContent = '';
+        // The submission is never thrown away — everything typed is still
+        // in the form, and the fallback route is a real address, not a retry
+        // button that might fail the same way (SC 3.3.7).
+        showSummary([
+          {
+            id: 'message',
+            message:
+              'Your message could not be sent just now. Please try again, or email hello@carmenkrol.com directly.',
+          },
+        ]);
+      }
+    });
+  }
+</script>

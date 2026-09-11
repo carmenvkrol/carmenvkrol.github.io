@@ -1,0 +1,66 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../site';
+---
+
+<BaseLayout
+  title="About"
+  description="Ten years building user interfaces, now focused on accessibility engineering — auditing, remediation, and accessible component work for product teams."
+>
+  <div class="page region">
+    <p class="eyebrow">About</p>
+    <h1>Carmen Krol</h1>
+
+    <div class="prose about">
+      <!-- PLACEHOLDER. Read as credentials, not autobiography. -->
+      <p class="about__lede">
+        I am a software engineer with ten years of experience building user
+        interfaces, now working on the part of the job most teams postpone
+        until someone complains: making those interfaces usable by everyone.
+      </p>
+
+      <h2>What I actually do</h2>
+      <p>
+        Placeholder. A paragraph on the shape of the work — the kinds of
+        products, the kinds of teams, and what you tend to find when you
+        arrive. Concrete beats comprehensive.
+      </p>
+
+      <h2>How I work</h2>
+      <p>
+        Placeholder. Testing with a keyboard and a screen reader rather than
+        only a scanner; fixing causes in components rather than symptoms in
+        pages; leaving a team able to catch the next issue without you.
+      </p>
+
+      <h2>Background</h2>
+      <p>
+        Placeholder. Where the ten years were spent and what they were spent
+        on. Enough for a stranger to place you, not a full résumé.
+      </p>
+
+      <h2>Elsewhere</h2>
+      <ul>
+        <li><a href={site.repoUrl} rel="noopener">GitHub</a></li>
+        <li>Placeholder — LinkedIn, Mastodon, speaking, whatever you keep current</li>
+      </ul>
+
+      <p>
+        The quickest way to reach me is <a href="/contact/">the contact form</a>,
+        or <a href={`mailto:${site.email}`}>{site.email}</a> if you would
+        rather email.
+      </p>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .about__lede {
+    font-size: var(--step-1);
+    color: var(--muted);
+  }
+
+  .about h2 {
+    font-size: var(--step-2);
+  }
+</style>

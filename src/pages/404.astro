@@ -1,0 +1,28 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Page not found"
+  description="That page does not exist. Links to the rest of the site."
+>
+  <div class="page region">
+    <h1>That page doesn&rsquo;t exist</h1>
+    <div class="prose">
+      <p>
+        The address may be mistyped, or the page may have moved. These still
+        work:
+      </p>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/blog/">Blog</a></li>
+        <li><a href="/about/">About</a></li>
+        <li><a href="/contact/">Contact</a></li>
+      </ul>
+      <p>
+        If you followed a link from somewhere on this site, that is my mistake
+        — <a href="/contact/">tell me where it was</a> and I will fix it.
+      </p>
+    </div>
+  </div>
+</BaseLayout>

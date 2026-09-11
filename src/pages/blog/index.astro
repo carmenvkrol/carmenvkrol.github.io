@@ -1,0 +1,91 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { formatDate, isoDate } from '../../site';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+---
+
+<BaseLayout
+  title="Blog"
+  description="Writing on accessibility engineering — WCAG 2.2 in practice, component patterns, testing, and what automated tools miss."
+>
+  <div class="page region">
+    <p class="eyebrow">Blog</p>
+    <h1>Writing</h1>
+
+    <div class="prose blog-intro">
+      <p>
+        Notes on accessibility in real codebases — what the criteria mean in
+        practice, which patterns hold up, and where the tooling falls short.
+      </p>
+      <p class="text-muted">
+        There are no comments here. If a post raises a question, I would
+        rather you <a href="/contact/">get in touch</a> — you can also
+        <a href="/rss.xml">subscribe by RSS</a>.
+      </p>
+    </div>
+
+    {
+      posts.length === 0 ? (
+        <p class="prose">No posts published yet.</p>
+      ) : (
+        <ul role="list" class="post-list">
+          {posts.map((post) => (
+            <li class="post-list__item">
+              <h2>
+                <a href={`/blog/${post.id}/`}>{post.data.title}</a>
+              </h2>
+              <p class="post-list__meta">
+                <time datetime={isoDate(post.data.pubDate)}>
+                  {formatDate(post.data.pubDate)}
+                </time>
+                {post.data.tags.length > 0 && (
+                  <>
+                    {' · '}
+                    <span>{post.data.tags.join(', ')}</span>
+                  </>
+                )}
+              </p>
+              <p>{post.data.description}</p>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+  </div>
+</BaseLayout>
+
+<style>
+  .blog-intro {
+    margin-block: var(--space-s) var(--space-l);
+  }
+
+  .post-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-l);
+    max-inline-size: var(--measure);
+  }
+
+  .post-list__item h2 {
+    font-size: var(--step-2);
+  }
+
+  .post-list__item h2 a {
+    color: var(--ink);
+    text-decoration-color: var(--edge);
+  }
+
+  .post-list__item h2 a:hover {
+    color: var(--accent);
+  }
+
+  .post-list__meta {
+    font-size: var(--step--1);
+    color: var(--muted);
+    margin-block: var(--space-3xs) var(--space-2xs);
+  }
+</style>
