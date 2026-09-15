@@ -1,6 +1,4 @@
 ---
-import { site } from '../site';
-
 /**
  * Work-in-progress notice, shown on every page while site.underConstruction
  * is true.
@@ -10,15 +8,15 @@ import { site } from '../site';
  * response to something the visitor did; using them for text that is present
  * on load makes a screen reader announce it over whatever the person was
  * already reading.
+ *
+ * Deliberately carries no call to action: nothing on the site is finished
+ * yet, and pointing visitors at it would imply otherwise.
  */
 ---
 
 <aside class="construction" aria-label="Site status">
   <p class="construction__inner page">
-    <strong>Work in progress.</strong> Some sections are still placeholder text
-    while I build this out. The contact form works, so if something here is
-    relevant to you, <a href="/contact/">get in touch</a> — or email
-    <a href={`mailto:${site.email}`}>{site.email}</a>.
+    <strong>Work in progress</strong> while Claude builds this out.
   </p>
 </aside>
 
@@ -34,12 +32,5 @@ import { site } from '../site';
   .construction__inner {
     padding-block: var(--space-2xs);
     font-size: var(--step--1);
-  }
-
-  .construction a {
-    /* These are inline links inside a sentence, so SC 2.5.8 target size
-       does not apply — but the underline needs to be unmistakable at this
-       smaller size. */
-    text-decoration-thickness: max(1px, 0.08em);
   }
 </style>
