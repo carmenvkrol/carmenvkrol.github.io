@@ -19,6 +19,17 @@ export const site = {
 
   /** Conformance target, quoted verbatim on the accessibility statement. */
   wcagTarget: 'WCAG 2.2 Level AA',
+
+  /**
+   * While true, every page shows the work-in-progress notice AND carries
+   * `noindex, nofollow`. Set to false the day the real copy lands — it is
+   * the single switch that takes the site from private draft to public.
+   *
+   * The noindex half matters more than the banner: a search engine that
+   * indexes "Placeholder — offer one" will keep serving it long after the
+   * page is fixed.
+   */
+  underConstruction: true,
 } as const;
 
 export const navItems = [

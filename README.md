@@ -53,6 +53,12 @@ Requires Node 22.12 or later.
 6. **DNS.** `www` is canonical: a `CNAME` record for `www` pointing at
    `<username>.github.io`, and GitHub's `A`/`AAAA` records at the apex so the
    bare domain redirects to `www`.
+7. **Flip `underConstruction` to `false`** in `src/site.ts` — do this last.
+   While it is `true`, every page shows a work-in-progress banner and carries
+   `noindex, nofollow`, which keeps the placeholder copy out of search
+   results. Leaving it on after launch means nobody ever finds the site;
+   turning it off before the copy is real means Google indexes
+   "Placeholder — offer one" and serves it for months.
 
 ---
 
