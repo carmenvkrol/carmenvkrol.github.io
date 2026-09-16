@@ -8,7 +8,10 @@ import ConstructionNotice from '../components/ConstructionNotice.astro';
 import { site } from '../site';
 
 interface Props {
-  /** Page-specific part of the <title>. Every page must have a distinct one — SC 2.4.2. */
+  /**
+   * Page-specific part of the <title>. Every page must have a distinct
+   * one — SC 2.4.2.
+   */
   title: string;
   description: string;
   /** Omit the site name suffix, for the home page only. */
@@ -16,7 +19,12 @@ interface Props {
   ogType?: 'website' | 'article';
 }
 
-const { title, description, bareTitle = false, ogType = 'website' } = Astro.props;
+const {
+  title,
+  description,
+  bareTitle = false,
+  ogType = 'website',
+} = Astro.props;
 
 const fullTitle = bareTitle ? title : `${title} — ${site.name}`;
 const canonical = new URL(Astro.url.pathname, Astro.site);
@@ -60,13 +68,17 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
 
   <body>
     <!-- First focusable element on every page. SC 2.4.1. -->
-    <a class="skip-link" href="#main">Skip to main content</a>
+    <a class="skip-link" href="#main">
+      Skip to main content
+    </a>
 
     {site.underConstruction && <ConstructionNotice />}
 
     <SiteHeader />
 
-    <!-- tabindex="-1" so the skip link can move focus here, not just scroll. -->
+    <!--
+      tabindex="-1" so the skip link can move focus here, not just scroll.
+    -->
     <main id="main" tabindex="-1">
       <slot />
     </main>

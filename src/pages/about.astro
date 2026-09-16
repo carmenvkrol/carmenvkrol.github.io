@@ -1,53 +1,113 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { site } from '../site';
+
+const description =
+  'A decade of software engineering, including nearly five years leading ' +
+  'accessibility work at Meta across web, Android and iOS.';
 ---
 
-<BaseLayout
-  title="About"
-  description="Ten years building user interfaces, now focused on accessibility engineering — auditing, remediation, and accessible component work for product teams."
->
+<BaseLayout title="About" description={description}>
   <div class="page region">
     <p class="eyebrow">About</p>
     <h1>Carmen Krol</h1>
 
     <div class="prose about">
-      <!-- PLACEHOLDER. Read as credentials, not autobiography. -->
       <p class="about__lede">
-        I am a software engineer with ten years of experience building user
-        interfaces, now working on the part of the job most teams postpone
-        until someone complains: making those interfaces usable by everyone.
+        I’m a software engineer with more than a decade of experience building
+        software, including nearly five years dedicated to accessibility at
+        Meta.
+      </p>
+      <p>
+        I’ve worked with product teams to understand accessibility requirements,
+        solve implementation challenges, and make accessibility a more practical
+        part of software development.
       </p>
 
       <h2>What I actually do</h2>
       <p>
-        Placeholder. A paragraph on the shape of the work — the kinds of
-        products, the kinds of teams, and what you tend to find when you
-        arrive. Concrete beats comprehensive.
+        I enjoy the intersection of accessibility and engineering: understanding
+        why something doesn’t work for someone using assistive technology,
+        figuring out how to fix it, and helping prevent similar problems from
+        happening again.
+      </p>
+      <p>
+        My experience includes working with engineers and product teams across
+        web, Android, and iOS. I’ve helped address accessibility issues,
+        contributed to accessible components and design systems, and built tools
+        to make accessibility testing and remediation more effective.
+      </p>
+      <p>
+        I’m particularly interested in the practical questions that come up
+        during development: How should this component behave? What does a screen
+        reader need to communicate? Which accessibility requirements can be
+        addressed in the code, and how can teams catch problems earlier?
       </p>
 
       <h2>How I work</h2>
       <p>
-        Placeholder. Testing with a keyboard and a screen reader rather than
-        only a scanner; fixing causes in components rather than symptoms in
-        pages; leaving a team able to catch the next issue without you.
+        I believe accessibility is most effective when it’s part of how software
+        is built—not something added at the end.
+      </p>
+      <p>
+        That means combining automated tools with manual testing, including
+        keyboard and assistive technology testing. It means looking beyond
+        individual pages to understand the components and implementation
+        decisions that may be causing problems.
+      </p>
+      <p>
+        And it means helping engineers understand why something needs to change,
+        so they can apply that knowledge to the next feature they build.
       </p>
 
       <h2>Background</h2>
       <p>
-        Placeholder. Where the ten years were spent and what they were spent
-        on. Enough for a stranger to place you, not a full résumé.
+        I spent more than a decade working as a software engineer, most recently
+        at Meta, where I was a tech lead on the Central Accessibility Team for
+        nearly five years.
+      </p>
+      <p>
+        My work there included helping product teams build and remediate
+        accessible experiences across web, Android, and iOS; developing
+        accessible components and testing tools; and exploring AI-based
+        approaches to identifying and addressing accessibility issues.
+      </p>
+      <p>
+        I’m now taking time to explore independent consulting and other
+        opportunities to apply my engineering and accessibility experience. I
+        also have{' '}
+        <a
+          href="https://www.accessibilityassociation.org/cpacc"
+          target="_blank"
+        >
+          CPACC certification provided by IAAP
+        </a>
+        .
+      </p>
+      <p>
+        Before software engineering, I obtained my masters degree in Science
+        &amp; Technology Studies at Cornell University, where I researched how
+        users interact with technology in different cultural and social
+        settings.
       </p>
 
       <h2>Elsewhere</h2>
       <ul>
-        <li><a href={site.repoUrl} rel="noopener">GitHub</a></li>
-        <li>Placeholder — LinkedIn, Mastodon, speaking, whatever you keep current</li>
+        <li>
+          <a href={site.linkedInUrl} target="_blank">
+            LinkedIn
+          </a>
+        </li>
+        <li>
+          <a href={site.repoUrl} rel="noopener" target="_blank">
+            GitHub
+          </a>
+        </li>
       </ul>
 
       <p>
-        The quickest way to reach me is <a href="/contact/">the contact form</a>,
-        or <a href={`mailto:${site.email}`}>{site.email}</a> if you would
+        The quickest way to reach me is <a href="/contact/">the contact form</a>
+        , or <a href={`mailto:${site.email}`}>{site.email}</a> if you would
         rather email.
       </p>
     </div>

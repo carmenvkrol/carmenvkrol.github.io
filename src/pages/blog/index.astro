@@ -4,57 +4,62 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { formatDate, isoDate } from '../../site';
 
 const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
+
+const description =
+  'Writing on accessibility in software development: practical ' +
+  'implementation, engineering workflows, and what AI-assisted development ' +
+  'changes.';
 ---
 
-<BaseLayout
-  title="Blog"
-  description="Writing on accessibility engineering — WCAG 2.2 in practice, component patterns, testing, and what automated tools miss."
->
+<BaseLayout title="Blog" description={description}>
   <div class="page region">
     <p class="eyebrow">Blog</p>
     <h1>Writing</h1>
 
     <div class="prose blog-intro">
       <p>
-        Notes on accessibility in real codebases — what the criteria mean in
-        practice, which patterns hold up, and where the tooling falls short.
+        I write about accessibility in software development, with a focus on
+        practical implementation, engineering workflows, and the opportunities
+        and challenges created by AI-assisted development.
+      </p>
+      <p>
+        My goal is to make accessibility easier to understand and apply—not just
+        as a set of requirements, but as part of building better software.
       </p>
       <p class="text-muted">
-        There are no comments here. If a post raises a question, I would
-        rather you <a href="/contact/">get in touch</a> — you can also
-        <a href="/rss.xml">subscribe by RSS</a>.
+        Have a question, spot something I got wrong, or have a topic you'd like
+        to me to explore? <a href="/contact/">Get in touch</a>. I'd love to hear
+        from you.
       </p>
     </div>
 
-    {
-      posts.length === 0 ? (
-        <p class="prose">No posts published yet.</p>
-      ) : (
-        <ul role="list" class="post-list">
-          {posts.map((post) => (
-            <li class="post-list__item">
-              <h2>
-                <a href={`/blog/${post.id}/`}>{post.data.title}</a>
-              </h2>
-              <p class="post-list__meta">
-                <time datetime={isoDate(post.data.pubDate)}>
-                  {formatDate(post.data.pubDate)}
-                </time>
-                {post.data.tags.length > 0 && (
-                  <>
-                    {' · '}
-                    <span>{post.data.tags.join(', ')}</span>
-                  </>
-                )}
-              </p>
-              <p>{post.data.description}</p>
-            </li>
-          ))}
-        </ul>
-      )
-    }
+    {posts.length === 0 ? (
+      <p class="prose">No posts published yet.</p>
+    ) : (
+      <ul role="list" class="post-list">
+        {posts.map((post) => (
+          <li class="post-list__item">
+            <h2>
+              <a href={`/blog/${post.id}/`}>{post.data.title}</a>
+            </h2>
+            <p class="post-list__meta">
+              <time datetime={isoDate(post.data.pubDate)}>
+                {formatDate(post.data.pubDate)}
+              </time>
+              {post.data.tags.length > 0 && (
+                <>
+                  {' · '}
+                  <span>{post.data.tags.join(', ')}</span>
+                </>
+              )}
+            </p>
+            <p>{post.data.description}</p>
+          </li>
+        ))}
+      </ul>
+    )}
   </div>
 </BaseLayout>
 

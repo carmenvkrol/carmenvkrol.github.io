@@ -35,12 +35,7 @@ import { site } from '../site';
     <input type="checkbox" name="botcheck" tabindex="-1" />
   </label>
 
-  <div
-    id="form-errors"
-    class="error-summary"
-    tabindex="-1"
-    hidden
-  >
+  <div id="form-errors" class="error-summary" tabindex="-1" hidden>
     <h2 class="error-summary__title">There is a problem</h2>
     <ul role="list" id="form-errors-list" class="error-summary__list"></ul>
   </div>
@@ -103,7 +98,8 @@ import { site } from '../site';
       name="message"
       rows="6"
       required
-      aria-describedby="message-hint message-error"></textarea>
+      aria-describedby="message-hint message-error"
+    ></textarea>
     <p class="field__error" id="message-error" hidden></p>
   </div>
 
@@ -113,7 +109,9 @@ import { site } from '../site';
       accessibility tree and out of the tab order; the status region beside
       it carries the state instead.
     -->
-    <button type="submit" class="button">Send message</button>
+    <button type="submit" class="button">
+      Send message
+    </button>
     <p id="form-status" class="contact-form__status" role="status"></p>
   </div>
 </form>
@@ -265,7 +263,9 @@ import { site } from '../site';
 </style>
 
 <script>
-  const form = document.getElementById('contact-form') as HTMLFormElement | null;
+  const form = document.getElementById(
+    'contact-form',
+  ) as HTMLFormElement | null;
   const summary = document.getElementById('form-errors');
   const summaryList = document.getElementById('form-errors-list');
   const status = document.getElementById('form-status');
@@ -274,10 +274,16 @@ import { site } from '../site';
   if (form && summary && summaryList && status && success) {
     const loadedAt = Date.now();
 
-    type Rule = { id: string; label: string; validate: (value: string) => string | null };
+    type Rule = {
+      id: string;
+      label: string;
+      validate: (value: string) => string | null;
+    };
 
-    const required = (label: string) => (value: string): string | null =>
-      value.trim() === '' ? `Enter ${label}` : null;
+    const required =
+      (label: string) =>
+      (value: string): string | null =>
+        value.trim() === '' ? `Enter ${label}` : null;
 
     const rules: Rule[] = [
       { id: 'name', label: 'your name', validate: required('your name') },
@@ -309,9 +315,7 @@ import { site } from '../site';
 
     const setFieldError = (id: string, message: string | null): void => {
       const input = document.getElementById(id) as
-        | HTMLInputElement
-        | HTMLTextAreaElement
-        | null;
+        HTMLInputElement | HTMLTextAreaElement | null;
       const errorEl = document.getElementById(`${id}-error`);
       if (!input || !errorEl) return;
 
@@ -352,9 +356,7 @@ import { site } from '../site';
       const errors: { id: string; message: string }[] = [];
       for (const rule of rules) {
         const input = document.getElementById(rule.id) as
-          | HTMLInputElement
-          | HTMLTextAreaElement
-          | null;
+          HTMLInputElement | HTMLTextAreaElement | null;
         if (!input) continue;
         const message = rule.validate(input.value);
         setFieldError(rule.id, message);
@@ -369,7 +371,10 @@ import { site } from '../site';
       const input = document.getElementById(rule.id);
       input?.addEventListener('blur', () => {
         if (input.getAttribute('aria-invalid') === 'true') {
-          setFieldError(rule.id, rule.validate((input as HTMLInputElement).value));
+          setFieldError(
+            rule.id,
+            rule.validate((input as HTMLInputElement).value),
+          );
         }
       });
     }
@@ -389,7 +394,10 @@ import { site } from '../site';
       // a half; plenty of bots do. Generous enough never to catch a human.
       if (Date.now() - loadedAt < 1500) {
         showSummary([
-          { id: 'name', message: 'That was submitted unusually fast — please try again' },
+          {
+            id: 'name',
+            message: 'That was submitted unusually fast — please try again',
+          },
         ]);
         return;
       }
@@ -417,7 +425,8 @@ import { site } from '../site';
           {
             id: 'message',
             message:
-              'Your message could not be sent just now. Please try again, or email hello@carmenkrol.com directly.',
+              'Your message could not be sent just now. Please try again, ' +
+              'or email hello@carmenkrol.com directly.',
           },
         ]);
       }

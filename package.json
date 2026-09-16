@@ -13,7 +13,9 @@
     "check": "astro check",
     "test:a11y": "playwright test",
     "test:html": "html-validate \"dist/**/*.html\"",
-    "verify": "npm run build && npm run test:html && npm run test:a11y"
+    "verify": "npm run build && npm run test:html && npm run test:a11y",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.19",
@@ -27,6 +29,8 @@
     "@axe-core/playwright": "^4.13.0",
     "@playwright/test": "^1.63.0",
     "html-validate": "^11.15.0",
+    "prettier": "^3.9.7",
+    "prettier-plugin-astro": "^1.0.0",
     "sirv-cli": "^3.0.1",
     "typescript": "^6.0.3"
   }

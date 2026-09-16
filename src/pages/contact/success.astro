@@ -1,12 +1,13 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { site } from '../../site';
+
+const description =
+  'Your message has been sent. Carmen usually replies within two working ' +
+  'days.';
 ---
 
-<BaseLayout
-  title="Message sent"
-  description="Your message has been sent. Carmen usually replies within two working days."
->
+<BaseLayout title="Message sent" description={description}>
   <!--
     This page exists for the no-JavaScript path: Web3Forms redirects here
     after a native form POST. With JavaScript the visitor never leaves

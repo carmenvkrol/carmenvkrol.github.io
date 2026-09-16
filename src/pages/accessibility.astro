@@ -3,12 +3,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { site, formatDate } from '../site';
 
 const lastReviewed = new Date('2026-09-11');
+
+const description =
+  'How accessible this site aims to be, how it is tested, and how to report ' +
+  'a barrier you run into.';
 ---
 
-<BaseLayout
-  title="Accessibility statement"
-  description="How accessible this site is, how it was tested, what currently falls short, and how to report a barrier."
->
+<BaseLayout title="Accessibility statement" description={description}>
   <div class="page region">
     <p class="eyebrow">Accessibility statement</p>
     <h1>Accessibility of this site</h1>
@@ -22,103 +23,36 @@ const lastReviewed = new Date('2026-09-11');
 
       <h2>Conformance status</h2>
       <p>
-        This site aims to conform to <strong>{site.wcagTarget}</strong>. It is
-        currently <strong>partially conformant</strong>: most of the standard
-        is met, and the known exceptions are listed below.
+        This site aims to follow <strong>{site.wcagTarget}</strong> as a
+        reference for accessibility.
       </p>
       <p>
-        &ldquo;Partially conformant&rdquo; is the honest answer for almost
-        every site in active development, including this one. A claim of full
-        conformance usually means nobody has looked hard enough.
+        I have not conducted a formal third-party accessibility audit of this
+        site, and I do not claim that every page or feature fully conforms to
+        WCAG 2.2 Level AA.
       </p>
-
-      <h2>How this site was tested</h2>
-      <p>Testing is both automated and manual, because neither is sufficient alone.</p>
-      <h3>On every pull request</h3>
-      <ul>
-        <li>axe-core, run through Playwright against every page of the built site</li>
-        <li>HTML validation of the built output</li>
-        <li>A failure in either blocks the merge</li>
-      </ul>
-      <h3>Manually, before each release</h3>
-      <ul>
-        <li>Keyboard-only navigation of every page and every interactive control</li>
-        <li>VoiceOver on macOS and iOS</li>
-        <li>NVDA on Windows <em>(placeholder — confirm or remove)</em></li>
-        <li>400% browser zoom and a 320px viewport</li>
-        <li>Windows High Contrast / forced-colors mode</li>
-        <li>Reduced-motion preference enabled</li>
-      </ul>
       <p>
-        <strong>Automated tools catch roughly a third of WCAG issues.</strong>
-        A clean axe run is a floor, not a conformance claim, and this
-        statement does not treat it as one.
-      </p>
-
-      <h2>Known issues</h2>
-      <p>
-        <em>
-          Placeholder — replace with real findings once the site is built and
-          manually tested. Write them the way you would want a vendor to write
-          them to you: what fails, which criterion, who it affects, and when
-          it will be fixed.
-        </em>
-      </p>
-      <!--
-        A native <section> with an accessible name is exposed as a region,
-        so no explicit role is needed. tabindex="0" makes the horizontal
-        scroll reachable by keyboard — SC 1.4.10 with SC 2.1.1.
-      -->
-      <section class="table-scroll" tabindex="0" aria-label="Known accessibility issues">
-        <table>
-          <thead>
-            <tr>
-              <th scope="col">Issue</th>
-              <th scope="col">Criterion</th>
-              <th scope="col">Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th scope="row">Example — code blocks in posts have not been verified in forced-colors mode</th>
-              <td>1.4.3, 1.4.11</td>
-              <td>Open, fix expected this quarter</td>
-            </tr>
-            <tr>
-              <th scope="row">Example — long code samples scroll horizontally without a visible affordance</th>
-              <td>1.4.10</td>
-              <td>Open, under review</td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
-
-      <h2>Technical specifications</h2>
-      <p>
-        This site relies on HTML, CSS and a small amount of JavaScript. All
-        content is readable and all navigation works with JavaScript disabled.
-        The contact form works without JavaScript, and validates in place when
-        it is available.
+        I use automated testing and manual review to identify and address
+        accessibility issues, and I welcome feedback about barriers that may not
+        have been identified.
       </p>
 
       <h2>Feedback</h2>
       <p>
-        If anything here stopped you — a control you could not reach, text you
-        could not read, a form you could not complete — please tell me. I
-        treat it as a bug report, not a complaint.
+        If you encounter an accessibility barrier while using this site, I’d
+        appreciate hearing about it.
       </p>
       <p>
-        Email <a href={`mailto:${site.email}`}>{site.email}</a> or use
-        <a href="/contact/">the contact form</a>. I aim to respond within two
-        working days and to tell you either when it will be fixed or why it
-        will not be.
+        Please <a href="/contact/">contact me</a> or email{' '}
+        <a href={`mailto:${site.email}`}>{site.email}</a> with a description of
+        the problem, including the page where you encountered it and, if
+        possible, the technology or assistive technology you were using.
       </p>
-
+      <p>I’ll use this feedback to investigate and improve the site.</p>
       <h2>Preparation</h2>
       <p>
-        This statement was prepared by self-assessment on
-        <time datetime="2026-09-11">{formatDate(lastReviewed)}</time> and is
-        reviewed whenever the site changes materially.
+        This statement was last reviewed on
+        <time datetime="2026-09-16">{formatDate(lastReviewed)}</time>.
       </p>
     </div>
   </div>

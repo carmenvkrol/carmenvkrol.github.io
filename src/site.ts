@@ -12,10 +12,15 @@ export const site = {
   /** Published contact address. An alias, not a mailbox — rotate freely. */
   email: 'hello@carmenkrol.com',
 
-  /** Public by design; safe to commit. Replace with your own from web3forms.com. */
+  /**
+   * Public by design; safe to commit. Replace with your own from
+   * web3forms.com.
+   */
   web3formsAccessKey: 'REPLACE_WITH_YOUR_WEB3FORMS_ACCESS_KEY',
 
-  repoUrl: 'https://github.com/carmenvkrol/carmenvkrol.github.io',
+  repoUrl: 'https://github.com/carmenvkrol',
+
+  linkedInUrl: 'https://www.linkedin.com/in/carmenvkrol/',
 
   /** Conformance target, quoted verbatim on the accessibility statement. */
   wcagTarget: 'WCAG 2.2 Level AA',

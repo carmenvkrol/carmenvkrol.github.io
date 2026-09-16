@@ -6,7 +6,7 @@
    theme — the classic source of unreadable dark mode.
    Contrast was verified against WCAG 2.2 SC 1.4.3 and 1.4.11; the measured
    ratios are noted beside each pair.
-   --------------------------------------------------------------------------- */
+   ------------------------------------------------------------------------ */
 
 @layer tokens {
   :root {
@@ -22,24 +22,35 @@
     --muted: light-dark(#52585f, #a3abb3); /*  6.88 : 1 /  7.94 : 1 on ground */
 
     /* --- Accent ---------------------------------------------------------- */
-    --accent: light-dark(#0b4f9e, #8fb8f0); /*  7.65 : 1 /  9.04 : 1 on ground */
+    --accent: light-dark(
+      #0b4f9e,
+      #8fb8f0
+    ); /*  7.65 : 1 /  9.04 : 1 on ground */
     --accent-strong: light-dark(#08407f, #b4d0f6);
-    --on-accent: light-dark(#ffffff, #121416); /*  8.00 : 1 /  9.04 : 1 on accent */
+    --on-accent: light-dark(
+      #ffffff,
+      #121416
+    ); /*  8.00 : 1 /  9.04 : 1 on accent */
 
     /* --- Status ---------------------------------------------------------- */
     /* Semantic, kept separate from the accent so a red error never reads as
-       a brand colour. Never the only signal — every use is paired with text. */
-    --danger: light-dark(#a4232b, #ff9ea0); /*  7.04 : 1 /  9.36 : 1 on ground */
+       a brand colour. Never the only signal — each use is paired with text. */
+    --danger: light-dark(
+      #a4232b,
+      #ff9ea0
+    ); /*  7.04 : 1 /  9.36 : 1 on ground */
 
     /* --- Lines ----------------------------------------------------------- */
     --rule: light-dark(#dededa, #2a2f33); /* decorative hairlines only */
-    --edge: light-dark(#767c83, #6b737b); /*  4.03 : 1 /  3.84 : 1 — SC 1.4.11 */
+    --edge: light-dark(
+      #767c83,
+      #6b737b
+    ); /*  4.03 : 1 /  3.84 : 1 — SC 1.4.11 */
 
     /* --- Type ------------------------------------------------------------ */
     --font-ui:
       'Public Sans Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
-    --font-prose:
-      'Source Serif 4 Variable', Georgia, 'Times New Roman', serif;
+    --font-prose: 'Source Serif 4 Variable', Georgia, 'Times New Roman', serif;
     --font-mono: ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, monospace;
 
     /* A fluid scale. Each step interpolates between a 320px and a 1200px

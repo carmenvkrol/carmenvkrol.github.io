@@ -48,7 +48,7 @@ test.describe('axe-core', () => {
           impact: v.impact,
           help: v.help,
           nodes: v.nodes.map((n) => n.html),
-        }))
+        })),
       ).toEqual([]);
     });
   }
@@ -68,7 +68,9 @@ test.describe('structure', () => {
     for (const route of ALL_ROUTES) {
       await page.goto(route);
       const overflows = await page.evaluate(
-        () => document.documentElement.scrollWidth > document.documentElement.clientWidth + 1
+        () =>
+          document.documentElement.scrollWidth >
+          document.documentElement.clientWidth + 1,
       );
       expect(overflows, `${route} overflows horizontally at 320px`).toBe(false);
     }
@@ -88,10 +90,18 @@ test.describe('keyboard', () => {
     await expect(page.locator('#main')).toBeFocused();
   });
 
-  test('every interactive control is reachable and shows focus', async ({ page }) => {
+  test('every interactive control is reachable and shows focus', async ({
+    page,
+  }) => {
     await page.goto('/contact/');
     const controls = page.locator(
-      'a[href], button:not([hidden]), input:not([type="hidden"]), textarea, select'
+      [
+        'a[href]',
+        'button:not([hidden])',
+        'input:not([type="hidden"])',
+        'textarea',
+        'select',
+      ].join(', '),
     );
     const count = await controls.count();
     expect(count).toBeGreaterThan(0);
@@ -106,7 +116,9 @@ test.describe('keyboard', () => {
 });
 
 test.describe('contact form', () => {
-  test('submitting empty shows a summary that takes focus', async ({ page }) => {
+  test('submitting empty shows a summary that takes focus', async ({
+    page,
+  }) => {
     await page.goto('/contact/');
     await page.getByRole('button', { name: 'Send message' }).click();
 
@@ -141,6 +153,9 @@ test.describe('contact form', () => {
     await page.locator('#name').fill('Test Person');
     await page.locator('#name').blur();
     await expect(page.locator('#name-error')).toBeHidden();
-    await expect(page.locator('#name')).not.toHaveAttribute('aria-invalid', 'true');
+    await expect(page.locator('#name')).not.toHaveAttribute(
+      'aria-invalid',
+      'true',
+    );
   });
 });

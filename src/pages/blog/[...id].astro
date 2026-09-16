@@ -36,16 +36,14 @@ const { Content } = await render(post);
           <time datetime={isoDate(post.data.pubDate)}>
             {formatDate(post.data.pubDate)}
           </time>
-          {
-            post.data.updatedDate && (
-              <>
-                {' · updated '}
-                <time datetime={isoDate(post.data.updatedDate)}>
-                  {formatDate(post.data.updatedDate)}
-                </time>
-              </>
-            )
-          }
+          {post.data.updatedDate && (
+            <>
+              {' · updated '}
+              <time datetime={isoDate(post.data.updatedDate)}>
+                {formatDate(post.data.updatedDate)}
+              </time>
+            </>
+          )}
         </p>
       </header>
 

@@ -7,33 +7,40 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
   .slice(0, 3);
 
-/**
- * PLACEHOLDER CONTENT.
- *
- * These three cards are the experiment. Replace each with a service someone
- * could actually buy — specific enough that a stranger knows whether it is
- * for them. At least one should be attached to a deadline, since that is
- * what makes people act. See the build plan.
- */
+const description =
+  'Carmen Krol is a software engineer specialising in accessibility, with ' +
+  'nearly five years on Meta’s Central Accessibility Team. Accessibility ' +
+  'engineering, developer tooling, and AI-assisted remediation.';
+
 const offers = [
   {
-    title: 'Placeholder — offer one',
-    body: 'Name a concrete piece of work: what you do, who it is for, and what they get at the end. Two sentences.',
+    title: 'Accessibility engineering',
+    body:
+      'Understanding and addressing accessibility issues in web and mobile ' +
+      'products. My experience includes collaborating with engineers, ' +
+      'reviewing implementation decisions, and helping teams build more ' +
+      'accessible interfaces.',
   },
   {
-    title: 'Placeholder — offer two',
-    body: 'Ideally the deadline-driven one. A pre-launch review, or remediation before a compliance date.',
+    title: 'Developer guidance and tooling',
+    body:
+      'Making accessibility easier to integrate into software development ' +
+      'through practical guidance, reusable components, and tools that help ' +
+      'teams identify and address issues.',
   },
   {
-    title: 'Placeholder — offer three',
-    body: 'Something you would enjoy doing repeatedly. The point is to find work worth having.',
+    title: 'AI and accessibility',
+    body:
+      'Exploring what AI-generated software gets right and wrong about ' +
+      'accessibility—and how AI might help developers identify and remediate ' +
+      'accessibility problems.',
   },
 ];
 ---
 
 <BaseLayout
   title={`${site.name} — ${site.tagline}`}
-  description="Carmen Krol builds and audits accessible interfaces. Ten years of UI engineering, focused on WCAG 2.2 conformance, remediation and design systems."
+  description={description}
   bareTitle
 >
   <div class="page">
@@ -44,78 +51,63 @@ const offers = [
         don&rsquo;t.
       </h1>
       <p class="hero__lede">
-        Ten years as a UI engineer, now focused on accessibility: auditing
-        against {site.wcagTarget}, remediating real codebases, and helping
-        product teams build components they can trust.
+        I’m a software engineer with more than a decade of experience building
+        software, including nearly five years on Meta’s Central Accessibility
+        Team. I help product teams build and remediate accessible web and mobile
+        experiences, drawing on experience in accessibility engineering,
+        developer tooling, and AI-assisted approaches for identifying and fixing
+        accessibility issues.
       </p>
       <p class="hero__actions">
-        <a class="button" href="/contact/">Start a conversation</a>
-        <a class="button button--quiet" href="/blog/">Read the blog</a>
+        <a class="button" href="/contact/">
+          Start a conversation
+        </a>
+        <a class="button button--quiet" href="/blog/">
+          Read the blog
+        </a>
       </p>
     </section>
 
     <section class="region" aria-labelledby="offers-heading">
-      <h2 id="offers-heading">How I can help</h2>
+      <h2 id="offers-heading">Areas of focus</h2>
       <p class="prose text-muted">
-        Placeholder copy — replace before launch.
+        I’m interested in the practical side of accessibility: how requirements
+        translate into code, how teams find and fix problems, and how we can
+        build better development practices.
       </p>
       <ul role="list" class="card-grid offers">
-        {
-          offers.map((offer) => (
-            <li class="card">
-              <h3>{offer.title}</h3>
-              <p>{offer.body}</p>
-            </li>
-          ))
-        }
+        {offers.map((offer) => (
+          <li class="card">
+            <h3>{offer.title}</h3>
+            <p>{offer.body}</p>
+          </li>
+        ))}
       </ul>
     </section>
 
-    <section class="region" aria-labelledby="proof-heading">
-      <h2 id="proof-heading">This site is the work sample</h2>
-      <div class="prose">
+    {posts.length > 0 && (
+      <section class="region" aria-labelledby="writing-heading">
+        <h2 id="writing-heading">Recent writing</h2>
+        <ul role="list" class="post-list">
+          {posts.map((post) => (
+            <li class="post-list__item">
+              <h3>
+                <a href={`/blog/${post.id}/`}>{post.data.title}</a>
+              </h3>
+              <p class="post-list__meta">
+                <time datetime={isoDate(post.data.pubDate)}>
+                  {formatDate(post.data.pubDate)}
+                </time>
+              </p>
+              <p>{post.data.description}</p>
+            </li>
+          ))}
+        </ul>
         <p>
-          Everything here is hand-built: no component library, no utility CSS
-          framework, no purchased theme. Every page is checked against
-          axe-core in CI on every pull request, and every release gets a
-          manual pass with a keyboard and a screen reader before it ships.
+          <a href="/blog/">All posts</a>
         </p>
-        <p>
-          Automated tooling catches roughly a third of accessibility issues,
-          so a clean axe run is a starting point rather than a conformance
-          claim. What the site currently fails, and why, is written down on
-          the <a href="/accessibility/">accessibility statement</a> — and
-          the <a href={site.repoUrl} rel="noopener">source is public</a> if
-          you would rather read it than take my word for it.
-        </p>
-      </div>
-    </section>
-
-    {
-      posts.length > 0 && (
-        <section class="region" aria-labelledby="writing-heading">
-          <h2 id="writing-heading">Recent writing</h2>
-          <ul role="list" class="post-list">
-            {posts.map((post) => (
-              <li class="post-list__item">
-                <h3>
-                  <a href={`/blog/${post.id}/`}>{post.data.title}</a>
-                </h3>
-                <p class="post-list__meta">
-                  <time datetime={isoDate(post.data.pubDate)}>
-                    {formatDate(post.data.pubDate)}
-                  </time>
-                </p>
-                <p>{post.data.description}</p>
-              </li>
-            ))}
-          </ul>
-          <p>
-            <a href="/blog/">All posts</a>
-          </p>
-        </section>
-      )
-    }
+      </section>
+    )}
   </div>
 </BaseLayout>
 
