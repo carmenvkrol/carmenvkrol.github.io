@@ -10,7 +10,7 @@ export const site = {
   url: 'https://www.carmenkrol.com',
 
   /** Published contact address. An alias, not a mailbox — rotate freely. */
-  email: 'hello@carmenkrol.com',
+  email: 'contact@carmenkrol.com',
 
   /**
    * Public by design; safe to commit. Replace with your own from

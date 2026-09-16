@@ -19,6 +19,7 @@ import { site } from '../site';
   action="https://api.web3forms.com/submit"
   method="POST"
   novalidate
+  data-fallback-email={site.email}
 >
   <input type="hidden" name="access_key" value={site.web3formsAccessKey} />
   <input type="hidden" name="subject" value="New enquiry from carmenkrol.com" />
@@ -424,9 +425,11 @@ import { site } from '../site';
         showSummary([
           {
             id: 'message',
+            // Read from the form's data attribute rather than hard-coded
+            // here, so the published address lives in exactly one place.
             message:
               'Your message could not be sent just now. Please try again, ' +
-              'or email hello@carmenkrol.com directly.',
+              `or email ${form.dataset.fallbackEmail} directly.`,
           },
         ]);
       }

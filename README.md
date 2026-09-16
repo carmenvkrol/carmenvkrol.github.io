@@ -36,9 +36,9 @@ Requires Node 22.12 or later.
 
 1. **Web3Forms access key.** Sign up at [web3forms.com](https://web3forms.com),
    then replace `web3formsAccessKey` in `src/site.ts`. The key is public by
-   design and safe to commit. Point submissions at `hello@carmenkrol.com`, not
+   design and safe to commit. Point submissions at `contact@carmenkrol.com`, not
    at a personal address.
-2. **Set up `hello@carmenkrol.com`.** Forwarding alone is not enough — it
+2. **Set up `contact@carmenkrol.com`.** Forwarding alone is not enough — it
    receives but cannot send, so replies would go out from your personal address.
    Either a real mailbox on the domain, or forwarding plus an SMTP relay
    configured in Gmail's "Send mail as".

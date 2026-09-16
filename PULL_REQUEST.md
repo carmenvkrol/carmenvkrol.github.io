@@ -60,7 +60,7 @@ Also required:
 - [ ] `www.carmenkrol.com` CNAME record pointing at `carmenvkrol.github.io`
 - [ ] Apex `A`/`AAAA` records so the bare domain redirects to `www`
 - [ ] Web3Forms access key set in `src/site.ts`
-- [ ] `hello@carmenkrol.com` receiving, and able to send replies
+- [ ] `contact@carmenkrol.com` receiving, and able to send replies
 
 ## After merging
 
