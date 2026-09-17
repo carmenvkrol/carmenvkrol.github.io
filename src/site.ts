@@ -16,7 +16,7 @@ export const site = {
    * Public by design; safe to commit. Replace with your own from
    * web3forms.com.
    */
-  web3formsAccessKey: 'REPLACE_WITH_YOUR_WEB3FORMS_ACCESS_KEY',
+  web3formsAccessKey: 'e21ef8ab-0703-4be8-bec0-f4f7ccb313be',
 
   repoUrl: 'https://github.com/carmenvkrol',
 
