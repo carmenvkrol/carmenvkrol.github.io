@@ -1,0 +1,64 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ContactForm from '../../components/ContactForm.astro';
+import { site } from '../../site';
+
+const description =
+  'Get in touch about accessibility engineering, consulting, or a question ' +
+  'about something I’ve written.';
+---
+
+<BaseLayout title="Contact" description={description}>
+  <div class="page region">
+    <p class="eyebrow">Contact</p>
+    <h1>Get in touch</h1>
+
+    <div class="prose contact-intro">
+      <p>
+        I’m currently exploring independent consulting and other opportunities
+        involving accessibility engineering, software development, and AI.
+      </p>
+      <p>
+        If you’d like to discuss a project, ask a question about something I’ve
+        written, or explore a potential collaboration, I’d love to hear from
+        you.
+      </p>
+      <p>
+        Tell me a little about what you’re working on and what you’d like to
+        discuss.
+      </p>
+    </div>
+
+    <ContactForm />
+
+    <section class="region contact-alt" aria-labelledby="email-heading">
+      <h2 id="email-heading">Prefer email?</h2>
+      <div class="prose">
+        <p>
+          Write to <a href={`mailto:${site.email}`}>{site.email}</a>. It reaches
+          me the same way the form does, and it is easier if you need to copy a
+          colleague or forward my reply.
+        </p>
+        <p class="text-muted">
+          If something on this site stopped you from getting in touch, that is a
+          bug I want to hear about — the
+          <a href="/accessibility/">accessibility statement</a> has the details
+          of how to report it.
+        </p>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .contact-intro {
+    margin-block: var(--space-s) var(--space-l);
+    font-size: var(--step-1);
+    color: var(--muted);
+  }
+
+  .contact-alt h2 {
+    font-size: var(--step-2);
+    margin-block-end: var(--space-2xs);
+  }
+</style>

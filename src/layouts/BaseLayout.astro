@@ -1,0 +1,94 @@
+---
+import '@fontsource-variable/public-sans';
+import '@fontsource-variable/source-serif-4';
+import '../styles/global.css';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import ConstructionNotice from '../components/ConstructionNotice.astro';
+import { site } from '../site';
+
+interface Props {
+  /**
+   * Page-specific part of the <title>. Every page must have a distinct
+   * one — SC 2.4.2.
+   */
+  title: string;
+  description: string;
+  /** Omit the site name suffix, for the home page only. */
+  bareTitle?: boolean;
+  ogType?: 'website' | 'article';
+}
+
+const {
+  title,
+  description,
+  bareTitle = false,
+  ogType = 'website',
+} = Astro.props;
+
+const fullTitle = bareTitle ? title : `${title} — ${site.name}`;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+
+    {
+      /* Keep the half-built version out of search results entirely. Flipping
+         site.underConstruction to false removes this along with the banner. */
+      site.underConstruction && (
+        <meta name="robots" content="noindex, nofollow" />
+      )
+    }
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title={`${site.name} — Blog`}
+      href={new URL('rss.xml', Astro.site)}
+    />
+
+    <meta property="og:type" content={ogType} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content={site.name} />
+    <meta name="twitter:card" content="summary" />
+
+    <slot name="head" />
+  </head>
+
+  <body>
+    <!-- First focusable element on every page. SC 2.4.1. -->
+    <a class="skip-link" href="#main">
+      Skip to main content
+    </a>
+
+    {site.underConstruction && <ConstructionNotice />}
+
+    <SiteHeader />
+
+    <!--
+      tabindex="-1" so the skip link can move focus here, not just scroll.
+    -->
+    <main id="main" tabindex="-1">
+      <slot />
+    </main>
+
+    <SiteFooter />
+  </body>
+</html>
+
+<style>
+  main:focus {
+    outline: none;
+  }
+</style>

@@ -1,0 +1,64 @@
+---
+import { site } from '../site';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="page site-footer__inner">
+    <nav aria-label="Footer">
+      <ul role="list" class="site-footer__links">
+        <li>
+          <a href="/accessibility/">Accessibility statement</a>
+        </li>
+        <li>
+          <a href="/rss.xml">RSS feed</a>
+        </li>
+        <li>
+          <a href={site.repoUrl} rel="noopener">
+            Source on GitHub
+          </a>
+        </li>
+        <li>
+          <a href={`mailto:${site.email}`}>{site.email}</a>
+        </li>
+      </ul>
+    </nav>
+
+    <p class="site-footer__note">
+      &copy; {year} {site.name}. Built with accessibility in mind.
+    </p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-block-start: 1px solid var(--rule);
+    margin-block-start: var(--space-2xl);
+  }
+
+  .site-footer__inner {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-s);
+    padding-block: var(--space-l) var(--space-xl);
+  }
+
+  .site-footer__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2xs) var(--space-m);
+  }
+
+  .site-footer__links a {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: max(var(--target-min), 2.25rem);
+  }
+
+  .site-footer__note {
+    font-size: var(--step--1);
+    color: var(--muted);
+    max-inline-size: var(--measure);
+  }
+</style>

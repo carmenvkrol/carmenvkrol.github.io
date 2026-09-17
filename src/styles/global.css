@@ -1,0 +1,384 @@
+@layer reset, tokens, base, layout, components, utilities;
+
+@import './tokens.css';
+
+/* ---------------------------------------------------------------------------
+   Reset
+   ------------------------------------------------------------------------ */
+
+@layer reset {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  body,
+  h1,
+  h2,
+  h3,
+  h4,
+  p,
+  figure,
+  blockquote,
+  dl,
+  dd,
+  ul,
+  ol {
+    margin: 0;
+  }
+
+  ul[role='list'],
+  ol[role='list'] {
+    list-style: none;
+    padding: 0;
+  }
+
+  img,
+  picture,
+  svg,
+  video {
+    display: block;
+    max-inline-size: 100%;
+    block-size: auto;
+  }
+
+  input,
+  button,
+  textarea,
+  select {
+    font: inherit;
+    color: inherit;
+  }
+
+  /* SC 2.3.3 — respect a stated preference for reduced motion. Near-zero
+     rather than `none` so scroll-into-view and transitionend still fire. */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Base elements
+   ------------------------------------------------------------------------ */
+
+@layer base {
+  body {
+    background-color: var(--ground);
+    color: var(--ink);
+    font-family: var(--font-ui);
+    font-size: var(--step-0);
+    line-height: var(--leading-normal);
+    min-block-size: 100svb;
+    display: flex;
+    flex-direction: column;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-weight: 700;
+    line-height: var(--leading-tight);
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+
+  h1 {
+    font-size: var(--step-5);
+  }
+  h2 {
+    font-size: var(--step-3);
+  }
+  h3 {
+    font-size: var(--step-1);
+  }
+  h4 {
+    font-size: var(--step-0);
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  a {
+    color: var(--accent);
+    text-decoration-thickness: max(1px, 0.06em);
+    text-underline-offset: 0.18em;
+  }
+
+  a:hover {
+    color: var(--accent-strong);
+    text-decoration-thickness: max(2px, 0.11em);
+  }
+
+  /* SC 2.4.7 and SC 1.4.11. :focus-visible rather than :focus so that mouse
+     users do not get a ring on click, but keyboard users always do. The ring
+     sits on an outline (not a border or box-shadow) so it survives forced-
+     colors mode, where authored colours are replaced by the user's own. */
+  :focus-visible {
+    outline: var(--focus-width) solid var(--accent);
+    outline-offset: var(--focus-offset);
+    border-radius: 2px;
+  }
+
+  @media (forced-colors: active) {
+    :focus-visible {
+      outline-color: Highlight;
+    }
+  }
+
+  code,
+  kbd,
+  samp {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+  }
+
+  :target {
+    scroll-margin-block-start: var(--space-l);
+  }
+
+  ::selection {
+    background-color: var(--accent);
+    color: var(--on-accent);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Layout primitives
+   ------------------------------------------------------------------------ */
+
+@layer layout {
+  .page {
+    inline-size: min(100% - (var(--gutter) * 2), var(--page-max));
+    margin-inline: auto;
+  }
+
+  /* The single column of running text. Capped at a comfortable measure
+     regardless of how wide the viewport gets. */
+  .prose {
+    max-inline-size: var(--measure);
+  }
+
+  .prose > * + * {
+    margin-block-start: var(--space-s);
+  }
+
+  .prose > * + :is(h2, h3) {
+    margin-block-start: var(--space-l);
+  }
+
+  .prose :is(ul, ol):not([role='list']) {
+    padding-inline-start: 1.3em;
+  }
+
+  .prose li + li {
+    margin-block-start: var(--space-2xs);
+  }
+
+  .stack {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-s);
+  }
+
+  .region {
+    padding-block: var(--space-xl);
+  }
+
+  .region + .region {
+    border-block-start: 1px solid var(--rule);
+  }
+
+  main {
+    flex: 1;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Components
+   ------------------------------------------------------------------------ */
+
+@layer components {
+  /* --- Skip link -------------------------------------------------------- */
+  /* Visible on focus only. It moves into flow rather than being positioned
+     over content, so it can never obscure what it lands on (SC 2.4.11). */
+  .skip-link {
+    position: absolute;
+    inset-inline-start: var(--space-s);
+    inset-block-start: var(--space-s);
+    z-index: 10;
+    padding: var(--space-2xs) var(--space-s);
+    background-color: var(--accent);
+    color: var(--on-accent);
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: var(--radius);
+    translate: 0 -200%;
+  }
+
+  .skip-link:focus-visible {
+    translate: 0 0;
+  }
+
+  /* --- Labels ----------------------------------------------------------- */
+  .eyebrow {
+    font-size: var(--step--1);
+    font-weight: 600;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* --- Buttons and calls to action -------------------------------------- */
+  .button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2xs);
+    min-block-size: max(var(--target-min), 2.75rem);
+    padding-inline: var(--space-m);
+    padding-block: var(--space-2xs);
+    background-color: var(--accent);
+    color: var(--on-accent);
+    font-weight: 600;
+    text-decoration: none;
+    border: 1px solid transparent;
+    border-radius: var(--radius);
+    cursor: pointer;
+  }
+
+  .button:hover {
+    background-color: var(--accent-strong);
+    color: var(--on-accent);
+  }
+
+  .button--quiet {
+    background-color: transparent;
+    color: var(--accent);
+    border-color: var(--edge);
+  }
+
+  .button--quiet:hover {
+    background-color: var(--sunken);
+    color: var(--accent-strong);
+  }
+
+  /* --- Cards ------------------------------------------------------------ */
+  /* Used only where items are genuinely separate objects of the same kind.
+     Everything else on the site is separated by space and type alone. */
+  .card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xs);
+    padding: var(--space-m);
+    background-color: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+  }
+
+  .card h3 {
+    font-size: var(--step-1);
+  }
+
+  .card p {
+    color: var(--muted);
+    margin: 0;
+  }
+
+  /* Auto-fitting grid. Items fill the row rather than stretching over dead
+     space, and it collapses to one column without a media query. */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+    gap: var(--space-m);
+  }
+
+  /* --- Notes ------------------------------------------------------------ */
+  .note {
+    padding: var(--space-m);
+    background-color: var(--sunken);
+    border-inline-start: 3px solid var(--accent);
+    border-radius: 0 var(--radius) var(--radius) 0;
+  }
+
+  /* --- Tables ----------------------------------------------------------- */
+  /* SC 1.4.10: a wide table scrolls inside its own container so the page
+     body never scrolls sideways. tabindex makes it keyboard-scrollable. */
+  .table-scroll {
+    overflow-x: auto;
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+  }
+
+  .table-scroll:focus-visible {
+    outline-offset: -1px;
+  }
+
+  table {
+    inline-size: 100%;
+    border-collapse: collapse;
+    font-size: var(--step--1);
+  }
+
+  th,
+  td {
+    text-align: start;
+    vertical-align: top;
+    padding: var(--space-2xs) var(--space-s);
+    border-block-end: 1px solid var(--rule);
+  }
+
+  thead th {
+    background-color: var(--sunken);
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  tbody tr:last-child :is(th, td) {
+    border-block-end: 0;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Utilities
+   ------------------------------------------------------------------------ */
+
+@layer utilities {
+  /* Available to assistive technology, invisible on screen. Never use
+     display:none for anything a screen reader should still reach. */
+  .visually-hidden:not(:focus):not(:active) {
+    clip-path: inset(50%);
+    block-size: 1px;
+    inline-size: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+  }
+
+  .flow > * + * {
+    margin-block-start: var(--flow-space, var(--space-s));
+  }
+
+  .text-muted {
+    color: var(--muted);
+  }
+
+  .measure-narrow {
+    max-inline-size: var(--measure-narrow);
+  }
+}

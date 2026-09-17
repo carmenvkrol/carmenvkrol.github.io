@@ -1,0 +1,81 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site, formatDate } from '../site';
+
+const lastReviewed = new Date('2026-09-11');
+
+const description =
+  'How accessible this site aims to be, how it is tested, and how to report ' +
+  'a barrier you run into.';
+---
+
+<BaseLayout title="Accessibility statement" description={description}>
+  <div class="page region">
+    <p class="eyebrow">Accessibility statement</p>
+    <h1>Accessibility of this site</h1>
+
+    <div class="prose statement">
+      <p class="statement__lede">
+        This statement applies to {site.url}. It says what this site aims for,
+        how it was tested, and what it currently gets wrong. Most statements
+        skip that last part; it is the only part that tells you anything.
+      </p>
+
+      <h2>Conformance status</h2>
+      <p>
+        This site aims to follow <strong>{site.wcagTarget}</strong> as a
+        reference for accessibility.
+      </p>
+      <p>
+        I have not conducted a formal third-party accessibility audit of this
+        site, and I do not claim that every page or feature fully conforms to
+        WCAG 2.2 Level AA.
+      </p>
+      <p>
+        I use automated testing and manual review to identify and address
+        accessibility issues, and I welcome feedback about barriers that may not
+        have been identified.
+      </p>
+
+      <h2>Feedback</h2>
+      <p>
+        If you encounter an accessibility barrier while using this site, I’d
+        appreciate hearing about it.
+      </p>
+      <p>
+        Please <a href="/contact/">contact me</a> or email{' '}
+        <a href={`mailto:${site.email}`}>{site.email}</a> with a description of
+        the problem, including the page where you encountered it and, if
+        possible, the technology or assistive technology you were using.
+      </p>
+      <p>I’ll use this feedback to investigate and improve the site.</p>
+      <h2>Preparation</h2>
+      <p>
+        This statement was last reviewed on
+        <time datetime="2026-09-16">{formatDate(lastReviewed)}</time>.
+      </p>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .statement__lede {
+    font-size: var(--step-1);
+    color: var(--muted);
+  }
+
+  .statement h2 {
+    font-size: var(--step-2);
+  }
+
+  .statement h3 {
+    font-size: var(--step-0);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-label);
+    color: var(--muted);
+  }
+
+  .statement .table-scroll {
+    margin-block: var(--space-s);
+  }
+</style>

@@ -1,0 +1,37 @@
+---
+/**
+ * Work-in-progress notice, shown on every page while site.underConstruction
+ * is true.
+ *
+ * Static page content, so it is a plain <aside> with an accessible name —
+ * not role="status" or role="alert". Those are for messages that appear in
+ * response to something the visitor did; using them for text that is present
+ * on load makes a screen reader announce it over whatever the person was
+ * already reading.
+ *
+ * Carries one idea and no more. No call to action, because nothing here is
+ * finished yet and pointing visitors at it would imply otherwise; and no
+ * mention of who is doing the work, because a visitor does not care.
+ */
+---
+
+<aside class="construction" aria-label="Site status">
+  <p class="construction__inner page">
+    <strong>Work in progress.</strong> This site isn’t finished yet.
+  </p>
+</aside>
+
+<style>
+  .construction {
+    background-color: var(--sunken);
+    border-block-end: 2px solid var(--accent);
+  }
+
+  /* Width and gutters come from .page alone. Adding a max-inline-size here
+     too would win over it and pull the banner out of alignment with the
+     header and the content below. */
+  .construction__inner {
+    padding-block: var(--space-2xs);
+    font-size: var(--step--1);
+  }
+</style>

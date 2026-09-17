@@ -1,0 +1,167 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site, formatDate, isoDate } from '../site';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
+
+const description =
+  'Carmen Krol is a software engineer specialising in accessibility, with ' +
+  'nearly five years on Meta’s central accessibility team. Accessibility ' +
+  'engineering, developer tooling, and AI-assisted remediation.';
+
+const offers = [
+  {
+    title: 'Accessibility engineering',
+    body:
+      'Understanding and addressing accessibility issues in web and mobile ' +
+      'products. My experience includes collaborating with engineers, ' +
+      'reviewing implementation decisions, and helping teams build more ' +
+      'accessible interfaces.',
+  },
+  {
+    title: 'Developer guidance and tooling',
+    body:
+      'Making accessibility easier to integrate into software development ' +
+      'through practical guidance, reusable components, and tools that help ' +
+      'teams identify and address issues.',
+  },
+  {
+    title: 'AI and accessibility',
+    body:
+      'Exploring what AI-generated software gets right and wrong about ' +
+      'accessibility—and how AI might help developers identify and remediate ' +
+      'accessibility problems.',
+  },
+];
+---
+
+<BaseLayout
+  title={`${site.name} — ${site.tagline}`}
+  description={description}
+  bareTitle
+>
+  <div class="page">
+    <section class="hero region" aria-labelledby="hero-heading">
+      <p class="eyebrow">Accessibility engineering</p>
+      <h1 id="hero-heading">
+        I build interfaces that work for everyone — and fix the ones that
+        don&rsquo;t.
+      </h1>
+      <p class="hero__lede">
+        I’m a software engineer with more than a decade of experience building
+        software, including nearly five years on Meta’s central accessibility
+        team. I help product teams build and remediate accessible web and mobile
+        experiences, drawing on experience in accessibility engineering,
+        developer tooling, and AI-assisted approaches for identifying and fixing
+        accessibility issues.
+      </p>
+      <p class="hero__actions">
+        <a class="button" href="/contact/">
+          Start a conversation
+        </a>
+        <a class="button button--quiet" href="/blog/">
+          Read the blog
+        </a>
+      </p>
+    </section>
+
+    <section class="region" aria-labelledby="offers-heading">
+      <h2 id="offers-heading">Areas of focus</h2>
+      <p class="prose text-muted">
+        I’m interested in the practical side of accessibility: how requirements
+        translate into code, how teams find and fix problems, and how we can
+        build better development practices.
+      </p>
+      <ul role="list" class="card-grid offers">
+        {offers.map((offer) => (
+          <li class="card">
+            <h3>{offer.title}</h3>
+            <p>{offer.body}</p>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    {posts.length > 0 && (
+      <section class="region" aria-labelledby="writing-heading">
+        <h2 id="writing-heading">Recent writing</h2>
+        <ul role="list" class="post-list">
+          {posts.map((post) => (
+            <li class="post-list__item">
+              <h3>
+                <a href={`/blog/${post.id}/`}>{post.data.title}</a>
+              </h3>
+              <p class="post-list__meta">
+                <time datetime={isoDate(post.data.pubDate)}>
+                  {formatDate(post.data.pubDate)}
+                </time>
+              </p>
+              <p>{post.data.description}</p>
+            </li>
+          ))}
+        </ul>
+        <p>
+          <a href="/blog/">All posts</a>
+        </p>
+      </section>
+    )}
+  </div>
+</BaseLayout>
+
+<style>
+  /* One rule per element for inline size. Two rules competing over the same
+     property on the same selector is how spacing silently unravels. */
+  .hero {
+    max-inline-size: min(100%, 56ch);
+  }
+
+  .hero h1 {
+    margin-block: var(--space-2xs) var(--space-s);
+  }
+
+  .hero__lede {
+    font-size: var(--step-1);
+    color: var(--muted);
+  }
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-s);
+    margin-block-start: var(--space-m);
+  }
+
+  .offers {
+    margin-block-start: var(--space-m);
+  }
+
+  .post-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-m);
+    margin-block: var(--space-m);
+    max-inline-size: var(--measure);
+  }
+
+  .post-list__item h3 {
+    font-size: var(--step-1);
+  }
+
+  .post-list__item h3 a {
+    color: var(--ink);
+    text-decoration-color: var(--edge);
+  }
+
+  .post-list__item h3 a:hover {
+    color: var(--accent);
+  }
+
+  .post-list__meta {
+    font-size: var(--step--1);
+    color: var(--muted);
+    margin-block: var(--space-3xs);
+  }
+</style>

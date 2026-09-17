@@ -1,0 +1,141 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { formatDate, isoDate, site } from '../../site';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  return posts.map((post) => ({
+    params: { id: post.id },
+    props: { post },
+  }));
+}
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+
+<BaseLayout
+  title={post.data.title}
+  description={post.data.description}
+  ogType="article"
+>
+  <div class="page region">
+    <article class="post">
+      <header class="post__header">
+        <p class="eyebrow">
+          <a href="/blog/">Blog</a>
+        </p>
+        <h1>{post.data.title}</h1>
+        <p class="post__meta">
+          Published
+          <time datetime={isoDate(post.data.pubDate)}>
+            {formatDate(post.data.pubDate)}
+          </time>
+          {post.data.updatedDate && (
+            <>
+              {' · updated '}
+              <time datetime={isoDate(post.data.updatedDate)}>
+                {formatDate(post.data.updatedDate)}
+              </time>
+            </>
+          )}
+        </p>
+      </header>
+
+      <div class="prose post__body">
+        <Content />
+      </div>
+    </article>
+
+    <!-- Standing in for comments. Every post ends with a way to reply. -->
+    <aside class="post__cta note" aria-labelledby="cta-heading">
+      <h2 id="cta-heading">Questions about this?</h2>
+      <p>
+        There are no comments on this site, but I read every message.
+        <a href="/contact/">Get in touch</a> or email
+        <a href={`mailto:${site.email}`}>{site.email}</a>.
+      </p>
+    </aside>
+  </div>
+</BaseLayout>
+
+<style>
+  .post {
+    max-inline-size: var(--measure);
+  }
+
+  .post__header {
+    margin-block-end: var(--space-l);
+  }
+
+  .post__header h1 {
+    font-size: var(--step-4);
+    margin-block: var(--space-2xs) var(--space-2xs);
+  }
+
+  .post__meta {
+    font-size: var(--step--1);
+    color: var(--muted);
+  }
+
+  /* Long-form reading gets the serif; the rest of the site stays on the
+     UI sans. The measure is already capped by .prose. */
+  .post__body {
+    font-family: var(--font-prose);
+    font-size: var(--step-1);
+  }
+
+  .post__body :global(h2) {
+    font-family: var(--font-ui);
+    font-size: var(--step-2);
+    margin-block-start: var(--space-l);
+  }
+
+  .post__body :global(h3) {
+    font-family: var(--font-ui);
+    font-size: var(--step-1);
+    margin-block-start: var(--space-m);
+  }
+
+  .post__body :global(pre) {
+    overflow-x: auto;
+    padding: var(--space-s);
+    background-color: var(--sunken);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    font-size: var(--step--1);
+  }
+
+  .post__body :global(code) {
+    font-family: var(--font-mono);
+  }
+
+  .post__body :global(:not(pre) > code) {
+    padding: 0.1em 0.3em;
+    background-color: var(--sunken);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+  }
+
+  .post__body :global(blockquote) {
+    margin-inline: 0;
+    padding-inline-start: var(--space-s);
+    border-inline-start: 3px solid var(--edge);
+    color: var(--muted);
+  }
+
+  .post__cta {
+    margin-block-start: var(--space-xl);
+    max-inline-size: var(--measure);
+  }
+
+  .post__cta h2 {
+    font-size: var(--step-1);
+    margin-block-end: var(--space-3xs);
+  }
+</style>
