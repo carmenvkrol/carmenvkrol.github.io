@@ -1,6 +1,8 @@
 ---
+import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { site } from '../site';
+import portrait from '../assets/CarmenKrol.jpg';
 
 const description =
   'A decade of software engineering, including nearly five years leading ' +
@@ -13,11 +15,26 @@ const description =
     <h1>Carmen Krol</h1>
 
     <div class="prose about">
-      <p class="about__lede">
-        I’m a software engineer with more than a decade of experience building
-        software, including nearly five years dedicated to accessibility at
-        Meta.
-      </p>
+      <div class="about__intro">
+        {/* Decorative: the h1 immediately above already names her, so
+            describing the portrait would announce "Carmen Krol" twice. */}
+        {/* Fixed display width, so densities rather than widths/sizes: it
+            emits 1x and 2x only, and keeps src on the 220px copy instead of
+            falling back to the 2908px original. */}
+        <Image
+          src={portrait}
+          alt=""
+          class="about__portrait"
+          width={220}
+          densities={[1, 2]}
+          loading="eager"
+        />
+        <p class="about__lede">
+          I’m a software engineer with more than a decade of experience building
+          software, including nearly five years dedicated to accessibility at
+          Meta.
+        </p>
+      </div>
       <p>
         I’ve worked with product teams to understand accessibility requirements,
         solve implementation challenges, and make accessibility a more practical
@@ -115,7 +132,26 @@ const description =
 </BaseLayout>
 
 <style>
+  /* Wraps on its own once the two items no longer fit, so the portrait
+     stacks above the text on narrow screens without a breakpoint. */
+  .about__intro {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: start;
+    gap: var(--space-m);
+  }
+
+  .about__portrait {
+    flex: 0 0 auto;
+    inline-size: 220px;
+    border-radius: var(--radius);
+  }
+
   .about__lede {
+    /* min-inline-size: 0 stops the flex item refusing to shrink below the
+       width of its longest word, which is what causes overflow at 320px. */
+    flex: 1 1 22ch;
+    min-inline-size: 0;
     font-size: var(--step-1);
     color: var(--muted);
   }
