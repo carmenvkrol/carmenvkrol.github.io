@@ -1,8 +1,10 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { site, formatDate } from '../site';
+import { site, formatDate, isoDate } from '../site';
 
-const lastReviewed = new Date('2026-09-11');
+const lastReviewed = new Date('2026-09-21');
+const reviewedIso = isoDate(lastReviewed);
+const reviewedLabel = formatDate(lastReviewed);
 
 const description =
   'How accessible this site aims to be, how it is tested, and how to report ' +
@@ -17,8 +19,7 @@ const description =
     <div class="prose statement">
       <p class="statement__lede">
         This statement applies to {site.url}. It says what this site aims for,
-        how it was tested, and what it currently gets wrong. Most statements
-        skip that last part; it is the only part that tells you anything.
+        how it was tested, and how to report a problem.
       </p>
 
       <h2>Conformance status</h2>
@@ -52,7 +53,7 @@ const description =
       <h2>Preparation</h2>
       <p>
         This statement was last reviewed on
-        <time datetime="2026-09-16">{formatDate(lastReviewed)}</time>.
+        <time datetime={reviewedIso}>{reviewedLabel}</time>.
       </p>
     </div>
   </div>
