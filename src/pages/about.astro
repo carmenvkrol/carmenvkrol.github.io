@@ -108,7 +108,7 @@ const description =
       </p>
 
       <h2>Elsewhere</h2>
-      <ul role="list" class="elsewhere">
+      <ul role="list" class="bullet-list">
         <li>
           <a href={site.linkedInUrl} rel="noopener" target="_blank">
             LinkedIn
@@ -157,37 +157,5 @@ const description =
 
   .about h2 {
     font-size: var(--step-2);
-  }
-
-  /* The bullets are painted rather than list markers. A real ::marker is
-     announced by VoiceOver, and it takes the "1 of 2" position with it, so
-     the link text and its position are read as two separate things. An
-     empty ::before has no text content to announce, which leaves the
-     position on the item itself — "LinkedIn, link, 1 of 2" — while the dot
-     still shows. There is no node here to put aria-hidden on: ::marker is
-     not an element. */
-  .elsewhere li {
-    position: relative;
-    padding-inline-start: 1.3em;
-  }
-
-  .elsewhere li::before {
-    content: '';
-    position: absolute;
-    inset-inline-start: 0.4em;
-    inset-block-start: 0.62em;
-    inline-size: 0.34em;
-    block-size: 0.34em;
-    border-radius: 50%;
-    background-color: currentColor;
-  }
-
-  /* Forced-colors mode discards background paint. A border is repainted in
-     the user's own colours, and border-box sizing fills the dot solid. */
-  @media (forced-colors: active) {
-    .elsewhere li::before {
-      background-color: transparent;
-      border: 0.17em solid currentColor;
-    }
   }
 </style>

@@ -381,4 +381,36 @@
   .measure-narrow {
     max-inline-size: var(--measure-narrow);
   }
+
+  /* A list that shows bullets without exposing them. A real ::marker is
+     announced by VoiceOver, and it takes the item's position with it, so
+     the text and its "1 of 2" are read as two separate things. Pairing
+     this with role="list" drops the marker (see the reset) and keeps the
+     list semantics; the dot is painted back with an empty ::before, which
+     has no text content to announce. ::marker is not an element, so there
+     is nothing there to put aria-hidden on. */
+  .bullet-list li {
+    position: relative;
+    padding-inline-start: 1.3em;
+  }
+
+  .bullet-list li::before {
+    content: '';
+    position: absolute;
+    inset-inline-start: 0.4em;
+    inset-block-start: 0.62em;
+    inline-size: 0.34em;
+    block-size: 0.34em;
+    border-radius: 50%;
+    background-color: currentColor;
+  }
+
+  /* Forced-colors mode discards background paint. A border is repainted in
+     the user's own colours, and border-box sizing fills the dot solid. */
+  @media (forced-colors: active) {
+    .bullet-list li::before {
+      background-color: transparent;
+      border: 0.17em solid currentColor;
+    }
+  }
 }
