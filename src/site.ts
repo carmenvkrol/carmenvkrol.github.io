@@ -18,9 +18,11 @@ export const site = {
    */
   web3formsAccessKey: 'e21ef8ab-0703-4be8-bec0-f4f7ccb313be',
 
-  repoUrl: 'https://github.com/carmenvkrol',
+  repoUrl: 'https://github.com/carmenvkrol/carmenvkrol.github.io',
 
   linkedInUrl: 'https://www.linkedin.com/in/carmenvkrol/',
+
+  gitHubUrl: 'https://github.com/carmenvkrol',
 
   /** Conformance target, quoted verbatim on the accessibility statement. */
   wcagTarget: 'WCAG 2.2 Level AA',
