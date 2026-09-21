@@ -1,8 +1,10 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { site, formatDate } from '../site';
+import { site, formatDate, isoDate } from '../site';
 
 const lastReviewed = new Date('2026-09-21');
+const reviewedIso = isoDate(lastReviewed);
+const reviewedLabel = formatDate(lastReviewed);
 
 const description =
   'How accessible this site aims to be, how it is tested, and how to report ' +
@@ -51,7 +53,7 @@ const description =
       <h2>Preparation</h2>
       <p>
         This statement was last reviewed on
-        <time datetime="2026-09-21">{formatDate(lastReviewed)}</time>.
+        <time datetime={reviewedIso}>{reviewedLabel}</time>.
       </p>
     </div>
   </div>
