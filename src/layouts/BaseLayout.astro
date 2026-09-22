@@ -40,11 +40,9 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <link rel="canonical" href={canonical} />
 
     {
-      /* Keep the half-built version out of search results entirely. Flipping
-         site.underConstruction to false removes this along with the banner. */
-      site.underConstruction && (
-        <meta name="robots" content="noindex, nofollow" />
-      )
+      /* Keeps the site out of search results. Separate from the banner: the
+         notice can come down while this stays on. */
+      site.noindex && <meta name="robots" content="noindex, nofollow" />
     }
 
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
@@ -72,7 +70,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
       Skip to main content
     </a>
 
-    {site.underConstruction && <ConstructionNotice />}
+    {site.showConstructionNotice && <ConstructionNotice />}
 
     <SiteHeader />
 
