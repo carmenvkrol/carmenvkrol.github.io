@@ -116,7 +116,7 @@ import { site } from '../site';
   </div>
 </form>
 
-<div id="form-success" class="form-success" tabindex="-1" hidden>
+<div id="form-success" class="form-success" hidden>
   <h2>Thank you — your message is on its way</h2>
   <p>
     I read everything that comes through here and usually reply within two
@@ -274,6 +274,10 @@ import { site } from '../site';
   if (form && summary && summaryList && status && success) {
     const loadedAt = Date.now();
 
+    // The button stays enabled throughout, so a second press while the
+    // first request is still open would send the message twice.
+    let sending = false;
+
     type Rule = {
       id: string;
       label: string;
@@ -381,7 +385,11 @@ import { site } from '../site';
 
     form.addEventListener('submit', async (event) => {
       event.preventDefault();
+      if (sending) return;
       status.textContent = '';
+      // Clear any earlier confirmation, so it cannot sit above the result
+      // of the message being sent now.
+      success.hidden = true;
 
       const errors = validate();
       if (errors.length > 0) {
@@ -403,6 +411,7 @@ import { site } from '../site';
       }
 
       status.textContent = 'Sending your message…';
+      sending = true;
 
       try {
         const response = await fetch(form.action, {
@@ -413,9 +422,20 @@ import { site } from '../site';
 
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
-        form.hidden = true;
+        // SC 4.1.3. The outcome is announced from the status region, which
+        // is already in the page, rather than by moving focus to it — so
+        // nobody is taken out of the form to be told it worked.
+        //
+        // The form stays where it is and is emptied instead of hidden.
+        // Hiding it would take the focused button out of the document and
+        // drop focus to the body, which is the thing the old focus() call
+        // was really there to paper over.
+        form.reset();
+        // Revealed, not announced: it repeats the status message and adds
+        // the alternative address, and it sits directly after the button,
+        // so it is the next thing reached by reading on.
         success.hidden = false;
-        success.focus();
+        status.textContent = 'Your message has been sent.';
       } catch {
         status.textContent = '';
         // The submission is never thrown away — everything typed is still
@@ -431,6 +451,9 @@ import { site } from '../site';
               `or email ${form.dataset.fallbackEmail} directly.`,
           },
         ]);
+      } finally {
+        // Released either way, so a failed send can be retried immediately.
+        sending = false;
       }
     });
   }
