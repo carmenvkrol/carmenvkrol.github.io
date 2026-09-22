@@ -28,15 +28,24 @@ export const site = {
   wcagTarget: 'WCAG 2.2 Level AA',
 
   /**
-   * While true, every page shows the work-in-progress notice AND carries
-   * `noindex, nofollow`. Set to false the day the real copy lands — it is
-   * the single switch that takes the site from private draft to public.
+   * While true, every page carries `noindex, nofollow`.
    *
-   * The noindex half matters more than the banner: a search engine that
-   * indexes "Placeholder — offer one" will keep serving it long after the
-   * page is fixed.
+   * This is the half that is slow to undo. Once a crawler has indexed a
+   * page it will keep serving it long after the page changes, so it stays
+   * on until there is something worth finding — which means the blog
+   * having at least one published post, rather than "Articles coming
+   * soon."
    */
-  underConstruction: true,
+  noindex: true,
+
+  /**
+   * While true, every page shows the work-in-progress notice.
+   *
+   * Deliberately separate from `noindex`. The notice is a promise to the
+   * reader that the copy is not final; it comes down when the copy is
+   * real, which is earlier than the site is worth listing.
+   */
+  showConstructionNotice: false,
 } as const;
 
 export const navItems = [
