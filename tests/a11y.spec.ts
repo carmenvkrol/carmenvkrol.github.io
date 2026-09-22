@@ -158,4 +158,43 @@ test.describe('contact form', () => {
       'true',
     );
   });
+
+  // SC 4.1.3. Web3Forms is stubbed — no real submission leaves the test.
+  test('a sent message is announced without moving focus', async ({ page }) => {
+    await page.route('**/api.web3forms.com/**', async (route) => {
+      await new Promise((resolve) => setTimeout(resolve, 400));
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: '{"success":true}',
+      });
+    });
+
+    await page.goto('/contact/');
+
+    const status = page.locator('#form-status');
+    // The regression this guards: display:none while empty means the region
+    // is not being watched when the first message lands in it.
+    await expect(status).toHaveCSS('display', 'block');
+
+    await page.fill('#name', 'Test Person');
+    await page.fill('#email', 'test@example.com');
+    await page.fill('#message', 'This is a test message long enough to pass.');
+    // The form rejects anything completed faster than a person could.
+    await page.waitForTimeout(1700);
+
+    const send = page.getByRole('button', { name: 'Send message' });
+    await send.focus();
+    await send.click();
+
+    await expect(status).toHaveText('Sending your message…');
+    await expect(status).toHaveText('Your message has been sent.');
+    await expect(page.locator('#form-success')).toBeVisible();
+
+    await expect(send).toBeFocused();
+    await expect(page.locator('#contact-form')).toBeVisible();
+    for (const field of ['#name', '#email', '#message']) {
+      await expect(page.locator(field)).toHaveValue('');
+    }
+  });
 });
