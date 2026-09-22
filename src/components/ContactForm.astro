@@ -234,10 +234,11 @@ import { site } from '../site';
     gap: var(--space-s);
   }
 
-  .contact-form__status:empty {
-    display: none;
-  }
-
+  /* Never display:none, not even while empty. A live region has to be
+     rendered before text is put into it — a screen reader is not watching
+     a box that is not there, so the first message either lands late or is
+     dropped. Empty, it is a zero-width flex item and the row looks the
+     same. */
   .contact-form__status {
     margin: 0;
     font-weight: 600;
