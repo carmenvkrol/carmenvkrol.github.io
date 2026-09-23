@@ -45,7 +45,7 @@ A few notes:
 ## How I built the flow with Claude
 
 I purposely didn’t prompt Claude to consider accessibility while developing the
-Wheelhouse Android app. With
+WheelHouse Android app. With
 [architecture requirements](https://github.com/carmenvkrol/wheelhouse-android-app/blob/main/android/REQUIREMENTS.md)
 provided by Patrick, I asked Claude to develop the design requirements and
 wireframes. Once Claude created
@@ -70,7 +70,7 @@ trade. Instead of acting automatically, the app asks the user to decide, with a
 deadline. You don't need to understand options trading to follow the
 accessibility findings below.
 
-![Wheelhouse app showing home screen. One card is highlighted with header “Hold or Exit · Vega-Driven”. The card contains information on a trade option for MSFT and whether to exit or keep the option.](../../assets/blog/claude-android-app-accessibility/home-screen.png)
+![WheelHouse app showing home screen. One card is highlighted with header “Hold or Exit · Vega-Driven”. The card contains information on a trade option for MSFT and whether to exit or keep the option.](../../assets/blog/claude-android-app-accessibility/home-screen.png)
 
 ## What I found
 
@@ -91,7 +91,7 @@ and how to interact with it.
 I’m highlighting one example that wasn’t evident from the code, along with two
 other semantic issues I found in the same flow.
 
-![Wheelhouse app showing 3 buttons with text labels “Exit now”, “Hold”, and “Snooze”.](../../assets/blog/claude-android-app-accessibility/action-buttons.png)
+![WheelHouse app showing 3 buttons with text labels “Exit now”, “Hold”, and “Snooze”.](../../assets/blog/claude-android-app-accessibility/action-buttons.png)
 
 #### What I found
 
@@ -116,7 +116,7 @@ details in
 
 #### Other semantic issues in the same flow
 
-![Wheelhouse app showing expandable item and its descendant list with three items.](../../assets/blog/claude-android-app-accessibility/expandable-list.png)
+![WheelHouse app showing expandable item and its descendant list with three items.](../../assets/blog/claude-android-app-accessibility/expandable-list.png)
 
 I also discovered a couple of other accessibility semantic issues.
 
@@ -153,7 +153,7 @@ Using the
 I found that the subtext below the heading didn’t meet color contrast
 requirements.
 
-![Wheelhouse app showing subtext that is not meeting color contrast ratio requirement.](../../assets/blog/claude-android-app-accessibility/low-contrast-subtext.png)
+![WheelHouse app showing subtext that is not meeting color contrast ratio requirement.](../../assets/blog/claude-android-app-accessibility/low-contrast-subtext.png)
 
 The text had a contrast ratio of 3.27:1, which is below the WCAG 2.2 AA
 requirement of 4.5:1 for normal-sized text.
@@ -179,7 +179,7 @@ as an abbreviation.
 The app displayed “41m” to indicate that 41 minutes remained to make a decision.
 TalkBack announced it as “41 meters” because it interpreted “m” as meters.
 
-![Wheelhouse app showing a yellow badge labeled with “41m” text.](../../assets/blog/claude-android-app-accessibility/time-badge.png)
+![WheelHouse app showing a yellow badge labeled with “41m” text.](../../assets/blog/claude-android-app-accessibility/time-badge.png)
 
 #### Why it matters
 
