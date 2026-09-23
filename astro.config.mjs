@@ -2,6 +2,7 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import { satteri } from '@astrojs/markdown-satteri';
+import externalLinksNewTab from './src/lib/external-links-new-tab.mjs';
 import paintedListMarkers from './src/lib/painted-list-markers.mjs';
 
 // www is canonical. The apex redirects to it at the DNS/GitHub Pages layer,
@@ -12,9 +13,12 @@ export default defineConfig({
   trailingSlash: 'always',
   integrations: [sitemap()],
   markdown: {
-    // Markdown bulleted lists get role="list" and painted bullets, like
-    // every hand-written list, so VoiceOver does not announce "bullet".
-    processor: satteri({ hastPlugins: [paintedListMarkers] }),
+    // Markdown gets the same treatment as hand-written markup: bulleted
+    // lists with painted bullets, so VoiceOver does not announce "bullet",
+    // and off-site links that open in a new tab.
+    processor: satteri({
+      hastPlugins: [paintedListMarkers, externalLinksNewTab],
+    }),
   },
   build: {
     // Emit /about/index.html rather than /about.html so URLs stay clean

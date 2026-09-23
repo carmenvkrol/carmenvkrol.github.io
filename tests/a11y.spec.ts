@@ -88,6 +88,35 @@ test.describe('structure', () => {
     }
   });
 
+  // Off-site links open in a new tab with rel="noopener" stated, whether
+  // written by hand or in a post's Markdown. Links on this site, and
+  // mailto:, navigate in place.
+  test('every off-site link opens in a new tab', async ({ page }) => {
+    for (const route of ALL_ROUTES) {
+      await page.goto(route);
+      const offenders = await page.$$eval(
+        'a[href]',
+        (links: HTMLAnchorElement[]) =>
+          links
+            .filter((a) => {
+              const url = new URL(a.href);
+              const offSite =
+                /^https?:$/.test(url.protocol) &&
+                url.origin !== location.origin &&
+                !/(^|\.)carmenkrol\.com$/.test(url.hostname);
+              return (
+                offSite &&
+                (a.target !== '_blank' || !a.relList.contains('noopener'))
+              );
+            })
+            .map((a) => a.outerHTML.slice(0, 100)),
+      );
+      expect(offenders, `${route} has off-site links opening in place`).toEqual(
+        [],
+      );
+    }
+  });
+
   test('no page scrolls horizontally at 320px', async ({ page }) => {
     await page.setViewportSize({ width: 320, height: 640 });
     for (const route of ALL_ROUTES) {
