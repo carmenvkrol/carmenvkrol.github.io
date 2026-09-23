@@ -107,6 +107,15 @@ const { Content } = await render(post);
     margin-block-start: var(--space-m);
   }
 
+  /* Post headings run longer than the site's others, and balance splits
+     them into even halves — "#1 Accessibility semantics / weren't
+     implemented correctly" — leaving the first line half empty. pretty
+     fills the first line and only adjusts the break to avoid a lone last
+     word. */
+  .post__body :global(:is(h2, h3, h4)) {
+    text-wrap: pretty;
+  }
+
   /* Screenshots. Capping the height keeps a full phone screen from filling
      several viewports. object-fit scales it down inside its box rather than
      overriding the width attribute, which would leave lazy images with no
