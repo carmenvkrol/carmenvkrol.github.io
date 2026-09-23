@@ -83,27 +83,27 @@ const { Content } = await render(post);
     color: var(--muted);
   }
 
-  /* Long-form reading gets the serif; the rest of the site stays on the
-     UI sans. The measure is already capped by .prose. */
+  /* Same typeface as the rest of the site, one step larger for long-form
+     reading. The measure is already capped by .prose. */
   .post__body {
-    font-family: var(--font-prose);
     font-size: var(--step-1);
   }
 
+  /* With one typeface, size and weight carry the heading levels on their
+     own, so each level sits a step above the next. h4 matches the body size
+     and is set apart by weight. */
   .post__body :global(h2) {
-    font-family: var(--font-ui);
-    font-size: var(--step-2);
+    font-size: var(--step-3);
     margin-block-start: var(--space-l);
   }
 
   .post__body :global(h3) {
-    font-family: var(--font-ui);
-    font-size: var(--step-1);
+    font-size: var(--step-2);
     margin-block-start: var(--space-m);
   }
 
   .post__body :global(h4) {
-    font-family: var(--font-ui);
+    font-size: var(--step-1);
     margin-block-start: var(--space-m);
   }
 

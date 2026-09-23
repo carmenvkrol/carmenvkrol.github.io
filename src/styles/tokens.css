@@ -50,7 +50,6 @@
     /* --- Type ------------------------------------------------------------ */
     --font-ui:
       'Public Sans Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
-    --font-prose: 'Source Serif 4 Variable', Georgia, 'Times New Roman', serif;
     --font-mono: ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, monospace;
 
     /* A fluid scale. Each step interpolates between a 320px and a 1200px
