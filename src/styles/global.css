@@ -388,13 +388,16 @@
      this with role="list" drops the marker (see the reset) and keeps the
      list semantics; the dot is painted back with an empty ::before, which
      has no text content to announce. ::marker is not an element, so there
-     is nothing there to put aria-hidden on. */
-  .bullet-list li {
+     is nothing there to put aria-hidden on.
+
+     Child combinators, so a list nested inside another gets its own
+     markers rather than both. */
+  .bullet-list > li {
     position: relative;
     padding-inline-start: 1.3em;
   }
 
-  .bullet-list li::before {
+  .bullet-list > li::before {
     content: '';
     position: absolute;
     inset-inline-start: 0.4em;
@@ -408,7 +411,7 @@
   /* Forced-colors mode discards background paint. A border is repainted in
      the user's own colours, and border-box sizing fills the dot solid. */
   @media (forced-colors: active) {
-    .bullet-list li::before {
+    .bullet-list > li::before {
       background-color: transparent;
       border: 0.17em solid currentColor;
     }

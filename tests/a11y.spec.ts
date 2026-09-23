@@ -63,6 +63,31 @@ test.describe('structure', () => {
     });
   }
 
+  // VoiceOver announces a native bullet ::marker — "bullet" — ahead of the
+  // item, on top of its "1 of 3". Every bulleted list paints its bullets
+  // instead (.bullet-list), Markdown lists included. Ordered lists keep
+  // their native numbers, which are content.
+  test('no bulleted list shows a native marker', async ({ page }) => {
+    for (const route of ALL_ROUTES) {
+      await page.goto(route);
+      const offenders = await page.$$eval('ul', (lists) =>
+        lists
+          .filter(
+            (list) =>
+              list.getAttribute('role') !== 'list' ||
+              [...list.children].some(
+                (li) => getComputedStyle(li).listStyleType !== 'none',
+              ),
+          )
+          .map((list) => list.outerHTML.slice(0, 80)),
+      );
+      expect(
+        offenders,
+        `${route} has bulleted lists with native markers`,
+      ).toEqual([]);
+    }
+  });
+
   test('no page scrolls horizontally at 320px', async ({ page }) => {
     await page.setViewportSize({ width: 320, height: 640 });
     for (const route of ALL_ROUTES) {

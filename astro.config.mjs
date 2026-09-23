@@ -1,6 +1,8 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
+import { satteri } from '@astrojs/markdown-satteri';
+import paintedListMarkers from './src/lib/painted-list-markers.mjs';
 
 // www is canonical. The apex redirects to it at the DNS/GitHub Pages layer,
 // so every absolute URL the build emits — sitemap, RSS, canonical tags —
@@ -9,6 +11,11 @@ export default defineConfig({
   site: 'https://www.carmenkrol.com',
   trailingSlash: 'always',
   integrations: [sitemap()],
+  markdown: {
+    // Markdown bulleted lists get role="list" and painted bullets, like
+    // every hand-written list, so VoiceOver does not announce "bullet".
+    processor: satteri({ hastPlugins: [paintedListMarkers] }),
+  },
   build: {
     // Emit /about/index.html rather than /about.html so URLs stay clean
     // without server-side rewriting, which GitHub Pages cannot do.
