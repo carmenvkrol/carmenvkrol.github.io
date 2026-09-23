@@ -110,11 +110,29 @@ const { Content } = await render(post);
   /* Screenshots. Capping the height keeps a full phone screen from filling
      several viewports. object-fit scales it down inside its box rather than
      overriding the width attribute, which would leave lazy images with no
-     reserved space before they load and shift the text around them. */
+     reserved space before they load and shift the text around them.
+
+     The outline shows where a light screenshot ends against the light page.
+     It is four stacked drop-shadows rather than a border because a border
+     would trace the box, and a scaled-down screenshot is narrower than its
+     box. Each shadow is offset one pixel and applied to the result of the
+     one before, so the corners fill in and the line follows the painted
+     image exactly. */
   .post__body :global(img) {
     max-block-size: 40rem;
     object-fit: contain;
     object-position: left top;
+    filter: drop-shadow(1px 0 0 var(--edge)) drop-shadow(-1px 0 0 var(--edge))
+      drop-shadow(0 1px 0 var(--edge)) drop-shadow(0 -1px 0 var(--edge));
+  }
+
+  /* Forced-colors mode leaves filter colours alone, so the outline is set
+     to the user's own text colour. */
+  @media (forced-colors: active) {
+    .post__body :global(img) {
+      filter: drop-shadow(1px 0 0 CanvasText) drop-shadow(-1px 0 0 CanvasText)
+        drop-shadow(0 1px 0 CanvasText) drop-shadow(0 -1px 0 CanvasText);
+    }
   }
 
   .post__body :global(pre) {
