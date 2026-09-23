@@ -36,7 +36,7 @@ export const site = {
    * having at least one published post, rather than "Articles coming
    * soon."
    */
-  noindex: true,
+  noindex: false,
 
   /**
    * While true, every page shows the work-in-progress notice.

@@ -11,7 +11,13 @@ import paintedListMarkers from './src/lib/painted-list-markers.mjs';
 export default defineConfig({
   site: 'https://www.carmenkrol.com',
   trailingSlash: 'always',
-  integrations: [sitemap()],
+  integrations: [
+    sitemap({
+      // The contact confirmation page is noindex. Listing it would ask
+      // search engines to index a page that tells them not to.
+      filter: (page) => !page.endsWith('/contact/success/'),
+    }),
+  ],
   markdown: {
     // Markdown gets the same treatment as hand-written markup: bulleted
     // lists with painted bullets, so VoiceOver does not announce "bullet",
