@@ -5,6 +5,7 @@
     "void-style": "off",
     "attribute-boolean-style": "off",
     "no-inline-style": "off",
-    "no-redundant-role": "off"
+    "no-redundant-role": "off",
+    "valid-id": ["error", { "relaxed": true }]
   }
 }

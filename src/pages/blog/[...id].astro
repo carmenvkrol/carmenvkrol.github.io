@@ -83,23 +83,65 @@ const { Content } = await render(post);
     color: var(--muted);
   }
 
-  /* Long-form reading gets the serif; the rest of the site stays on the
-     UI sans. The measure is already capped by .prose. */
+  /* Same typeface as the rest of the site, one step larger for long-form
+     reading. The measure is already capped by .prose. */
   .post__body {
-    font-family: var(--font-prose);
     font-size: var(--step-1);
   }
 
+  /* With one typeface, size and weight carry the heading levels on their
+     own, so each level sits a step above the next. h4 matches the body size
+     and is set apart by weight. */
   .post__body :global(h2) {
-    font-family: var(--font-ui);
-    font-size: var(--step-2);
+    font-size: var(--step-3);
     margin-block-start: var(--space-l);
   }
 
   .post__body :global(h3) {
-    font-family: var(--font-ui);
+    font-size: var(--step-2);
+    margin-block-start: var(--space-m);
+  }
+
+  .post__body :global(h4) {
     font-size: var(--step-1);
     margin-block-start: var(--space-m);
+  }
+
+  /* Post headings run longer than the site's others, and balance splits
+     them into even halves — "#1 Accessibility semantics / weren't
+     implemented correctly" — leaving the first line half empty. pretty
+     fills the first line and only adjusts the break to avoid a lone last
+     word. */
+  .post__body :global(:is(h2, h3, h4)) {
+    text-wrap: pretty;
+  }
+
+  /* Screenshots. Capping the height keeps a full phone screen from filling
+     several viewports. object-fit scales it down inside its box rather than
+     overriding the width attribute, which would leave lazy images with no
+     reserved space before they load and shift the text around them.
+
+     The outline shows where a light screenshot ends against the light page.
+     It is four stacked drop-shadows rather than a border because a border
+     would trace the box, and a scaled-down screenshot is narrower than its
+     box. Each shadow is offset one pixel and applied to the result of the
+     one before, so the corners fill in and the line follows the painted
+     image exactly. */
+  .post__body :global(img) {
+    max-block-size: 40rem;
+    object-fit: contain;
+    object-position: left top;
+    filter: drop-shadow(1px 0 0 var(--edge)) drop-shadow(-1px 0 0 var(--edge))
+      drop-shadow(0 1px 0 var(--edge)) drop-shadow(0 -1px 0 var(--edge));
+  }
+
+  /* Forced-colors mode leaves filter colours alone, so the outline is set
+     to the user's own text colour. */
+  @media (forced-colors: active) {
+    .post__body :global(img) {
+      filter: drop-shadow(1px 0 0 CanvasText) drop-shadow(-1px 0 0 CanvasText)
+        drop-shadow(0 1px 0 CanvasText) drop-shadow(0 -1px 0 CanvasText);
+    }
   }
 
   .post__body :global(pre) {
