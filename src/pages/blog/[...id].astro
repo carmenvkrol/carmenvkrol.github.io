@@ -102,6 +102,21 @@ const { Content } = await render(post);
     margin-block-start: var(--space-m);
   }
 
+  .post__body :global(h4) {
+    font-family: var(--font-ui);
+    margin-block-start: var(--space-m);
+  }
+
+  /* Screenshots. Capping the height keeps a full phone screen from filling
+     several viewports. object-fit scales it down inside its box rather than
+     overriding the width attribute, which would leave lazy images with no
+     reserved space before they load and shift the text around them. */
+  .post__body :global(img) {
+    max-block-size: 40rem;
+    object-fit: contain;
+    object-position: left top;
+  }
+
   .post__body :global(pre) {
     overflow-x: auto;
     padding: var(--space-s);

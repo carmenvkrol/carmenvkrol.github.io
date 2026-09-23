@@ -14,7 +14,11 @@ interface Props {
    */
   title: string;
   description: string;
-  /** Omit the site name suffix, for the home page only. */
+  /**
+   * Omit the site name suffix. For the home page, and applied automatically
+   * when the suffix would push the title past 70 characters, where search
+   * results truncate it — the page's own words matter more than the name.
+   */
   bareTitle?: boolean;
   ogType?: 'website' | 'article';
 }
@@ -26,7 +30,8 @@ const {
   ogType = 'website',
 } = Astro.props;
 
-const fullTitle = bareTitle ? title : `${title} — ${site.name}`;
+const suffixed = `${title} — ${site.name}`;
+const fullTitle = bareTitle || suffixed.length > 70 ? title : suffixed;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 ---
 
