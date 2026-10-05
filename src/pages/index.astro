@@ -36,6 +36,17 @@ const offers = [
       'accessibility problems.',
   },
 ];
+
+const projects = [
+  {
+    title: 'ax-skills',
+    href: 'https://github.com/carmenvkrol/ax-skills',
+    body:
+      'Skills that help Claude with digital accessibility work. The first, ' +
+      'ax-link-library, answers questions from my curated library of 160+ ' +
+      'accessibility resources, with citations.',
+  },
+];
 ---
 
 <BaseLayout
@@ -108,6 +119,22 @@ const offers = [
         </p>
       </section>
     )}
+
+    <section class="region">
+      <h2>Selected projects</h2>
+      <ul role="list" class="card-grid projects">
+        {projects.map((project) => (
+          <li class="card">
+            <h3>
+              <a href={project.href} rel="noopener" target="_blank">
+                {project.title}
+              </a>
+            </h3>
+            <p>{project.body}</p>
+          </li>
+        ))}
+      </ul>
+    </section>
   </div>
 </BaseLayout>
 
@@ -134,7 +161,8 @@ const offers = [
     margin-block-start: var(--space-m);
   }
 
-  .offers {
+  .offers,
+  .projects {
     margin-block-start: var(--space-m);
   }
 
