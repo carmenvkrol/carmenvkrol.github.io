@@ -2,7 +2,7 @@
 title: 'I Built an Android App with Claude. Then I Tested Its Accessibility'
 description:
   'I asked Claude to build an Android app without mentioning accessibility, then
-  audited one flow against WCAG 2.2 AA. Nine criteria failed.'
+  audited one flow against WCAG 2.2 AA. Eight criteria failed.'
 pubDate: 2026-09-23
 tags: ['android', 'ai', 'wcag']
 ---
@@ -74,14 +74,12 @@ accessibility findings below.
 
 ## What I found
 
-Of the 24 applicable WCAG AA criteria for this flow, 15 passed and 9 failed.
-Rather than walk through all nine failures, I’m highlighting three findings that
-stood out to me and illustrate the accessibility issues I encountered in the
-flow.
-
-_Update: I later determined that one reported failure, WCAG 1.3.4 (Orientation),
-was caused by my phone’s configuration, not the app. See the complete findings
-and correction in the “The Eight Accessibility Findings” section below._
+Of the 24 applicable WCAG AA criteria for this flow, 16 passed and 8 failed. I
+initially reported 9 failures, but further investigation revealed that one of
+them—WCAG 1.3.4 (Orientation)—was caused by my phone’s configuration, not the
+app. Rather than walk through all eight failures, I’m highlighting three
+findings that stood out to me and illustrate the accessibility issues I
+encountered.
 
 ### #1 Accessibility semantics weren’t implemented correctly
 
@@ -200,16 +198,16 @@ added to the element’s contentDescription. More details in
 
 This section describes the 8 WCAG failures I found while auditing the user flow.
 
-| WCAG Criterion                                                                                                         | Finding                                                                                                                                                                                                      |
-| ---------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| [1.1.1 Non-text Content](https://www.w3.org/TR/WCAG22/#non-text-content)                                               | Decorative arrow up and down icons for expandable sections are exposed on TalkBack. The arrow icon in the chart explanation is announced on TalkBack as “arrow” instead of its meaning.                      |
-| [1.3.1 Info and Relationships](https://www.w3.org/TR/WCAG22/#info-and-relationships)                                   | The card heading isn’t announced on TalkBack as a heading. List items on TalkBack aren’t announcing their position.                                                                                          |
-| [1.4.3 Contrast (Minimum)](https://www.w3.org/TR/WCAG22/#contrast-minimum)                                             | Subtext that starts with “Sold $3.10…” doesn’t match the required color contrast ratio                                                                                                                       |
-| [1.4.4 Resize Text](https://www.w3.org/TR/WCAG22/#resize-text)                                                         | At 200% text scaling, a space is missing between the left and right sides of the chart header.                                                                                                               |
-| [1.4.11 Non-text Contrast](https://www.w3.org/TR/WCAG22/#non-text-contrast)                                            | “Delta” on the left side of the bar chart doesn’t match the required color contrast ratio. The focus indicator with an external keyboard also fails color contrast.                                          |
-| [2.4.6 Headings and Labels](https://www.w3.org/TR/WCAG22/#headings-and-labels)                                         | Badge label “41m” announces on TalkBack as “41 meters” instead of “41 minutes”.                                                                                                                              |
-| [3.3.4 Error Prevention (Legal, Financial, Data)](https://www.w3.org/TR/WCAG22/#error-prevention-legal-financial-data) | “Exit now” and “Snooze” buttons don’t provide a way to reverse or confirm action before it is submitted.                                                                                                     |
-| [4.1.2 Name, Role, Value](https://www.w3.org/TR/WCAG22/#name-role-value)                                               | “Exit now”, “Hold”, and “Snooze” buttons are missing button role. Expandable “Why the engineer wants this (3)” button is missing expanded/<wbr>collapsed state. List items aren’t announcing their position. |
+| WCAG Criterion                                                                                                         | Finding                                                                                                                                                                                                                                                                                                                             |
+| ---------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [1.1.1 Non-text Content](https://www.w3.org/TR/WCAG22/#non-text-content)                                               | Decorative arrow up and down icons for expandable sections are exposed on TalkBack. The arrow icon in the chart explanation is announced on TalkBack as “arrow” instead of its meaning.                                                                                                                                             |
+| [1.3.1 Info and Relationships](https://www.w3.org/TR/WCAG22/#info-and-relationships)                                   | The card heading isn’t announced on TalkBack as a heading. List items aren’t announced with their position, so TalkBack users don’t receive the same information about the items’ relationship that is conveyed visually.                                                                                                           |
+| [1.4.3 Contrast (Minimum)](https://www.w3.org/TR/WCAG22/#contrast-minimum)                                             | Subtext that starts with “Sold $3.10…” doesn’t match the required color contrast ratio.                                                                                                                                                                                                                                             |
+| [1.4.4 Resize Text](https://www.w3.org/TR/WCAG22/#resize-text)                                                         | At 200% text scaling, a space is missing between the left and right sides of the chart header.                                                                                                                                                                                                                                      |
+| [1.4.11 Non-text Contrast](https://www.w3.org/TR/WCAG22/#non-text-contrast)                                            | “Delta” on the left side of the bar chart doesn’t match the required color contrast ratio. The focus indicator with an external keyboard also fails color contrast.                                                                                                                                                                 |
+| [2.4.6 Headings and Labels](https://www.w3.org/TR/WCAG22/#headings-and-labels)                                         | Badge label “41m” announces on TalkBack as “41 meters” instead of “41 minutes”.                                                                                                                                                                                                                                                     |
+| [3.3.4 Error Prevention (Legal, Financial, Data)](https://www.w3.org/TR/WCAG22/#error-prevention-legal-financial-data) | “Exit now” and “Snooze” buttons don’t provide a way to reverse or confirm action before it is submitted.                                                                                                                                                                                                                            |
+| [4.1.2 Name, Role, Value](https://www.w3.org/TR/WCAG22/#name-role-value)                                               | The “Exit now,” “Hold,” and “Snooze” controls don’t expose their button role correctly. The expandable “Why the engineer wants this (3)” control doesn’t expose its expanded/<wbr>collapsed state through the appropriate accessibility property. List items don’t expose their position information through the accessibility API. |
 
 In my original audit, I identified
 [WCAG 1.3.4 (Orientation)](https://www.w3.org/TR/WCAG22/#orientation) as a
