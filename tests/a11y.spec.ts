@@ -144,6 +144,28 @@ test.describe('keyboard', () => {
     await expect(page.locator('#main')).toBeFocused();
   });
 
+  test('a table box is a tab stop only while its table overflows', async ({
+    page,
+  }) => {
+    for (const route of ALL_ROUTES) {
+      await page.goto(route);
+      const boxes = page.locator('.table-scroll');
+      for (let i = 0; i < (await boxes.count()); i += 1) {
+        const box = boxes.nth(i);
+        const overflows = await box.evaluate(
+          (el) => el.scrollWidth > el.clientWidth + 1,
+        );
+        const focusable = await box.evaluate(
+          (el) => el.getAttribute('tabindex') === '0',
+        );
+        expect(
+          focusable,
+          `table ${i + 1} on ${route} ${overflows ? 'overflows but is not focusable' : 'fits but is focusable'}`,
+        ).toBe(overflows);
+      }
+    }
+  });
+
   test('every interactive control is reachable and shows focus', async ({
     page,
   }) => {

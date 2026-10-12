@@ -346,7 +346,6 @@
   thead th {
     background-color: var(--sunken);
     font-weight: 600;
-    white-space: nowrap;
   }
 
   tbody tr:last-child :is(th, td) {

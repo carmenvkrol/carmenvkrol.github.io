@@ -64,6 +64,40 @@ const { Content } = await render(post);
   </div>
 </BaseLayout>
 
+<script>
+  // A table that overflows its .table-scroll box can only be scrolled from
+  // the keyboard if the box takes focus, and anything focusable needs a role
+  // and a name. A table that fits gets none of these, so it is not an empty
+  // tab stop or an extra landmark. Re-checked whenever the box or its table
+  // resizes: a window resize, rotation, or text zoom can change the answer.
+  const boxes = document.querySelectorAll<HTMLElement>('.table-scroll');
+
+  const update = (box: HTMLElement): void => {
+    if (box.scrollWidth > box.clientWidth + 1) {
+      box.tabIndex = 0;
+      box.setAttribute('role', 'region');
+      box.setAttribute('aria-label', 'Scrollable table');
+    } else {
+      box.removeAttribute('tabindex');
+      box.removeAttribute('role');
+      box.removeAttribute('aria-label');
+    }
+  };
+
+  const observer = new ResizeObserver((entries) => {
+    for (const entry of entries) {
+      const box = entry.target.closest<HTMLElement>('.table-scroll');
+      if (box) update(box);
+    }
+  });
+  boxes.forEach((box) => {
+    update(box);
+    observer.observe(box);
+    const table = box.querySelector('table');
+    if (table) observer.observe(table);
+  });
+</script>
+
 <style>
   .post {
     max-inline-size: var(--measure);
@@ -133,6 +167,22 @@ const { Content } = await render(post);
     object-position: left top;
     filter: drop-shadow(1px 0 0 var(--edge)) drop-shadow(-1px 0 0 var(--edge))
       drop-shadow(0 1px 0 var(--edge)) drop-shadow(0 -1px 0 var(--edge));
+  }
+
+  /* Screenshots written on consecutive lines share a paragraph. They stack
+     on narrow screens and sit in one row on wider ones. All or nothing,
+     rather than wrapping, so three screenshots never split two and one. */
+  .post__body :global(p:has(> img + img)) {
+    display: grid;
+    gap: var(--space-s);
+    align-items: start;
+  }
+
+  @media (min-width: 40rem) {
+    .post__body :global(p:has(> img + img)) {
+      grid-auto-flow: column;
+      grid-auto-columns: 1fr;
+    }
   }
 
   /* Forced-colors mode leaves filter colours alone, so the outline is set
