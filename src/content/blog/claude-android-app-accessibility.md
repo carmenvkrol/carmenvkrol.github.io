@@ -79,6 +79,10 @@ Rather than walk through all nine failures, I’m highlighting three findings th
 stood out to me and illustrate the accessibility issues I encountered in the
 flow.
 
+_Update: I later determined that one reported failure, WCAG 1.3.4 (Orientation),
+was caused by my phone’s configuration, not the app. See the complete findings
+and correction in the “The Eight Accessibility Findings” section below._
+
 ### #1 Accessibility semantics weren’t implemented correctly
 
 This category stood out to me because I found several examples of missing or
@@ -191,6 +195,28 @@ information about how much time they have to make a decision.
 Provide a full accessibility label such as “41 minutes remaining”. This can be
 added to the element’s contentDescription. More details in
 [this PR](https://github.com/carmenvkrol/wheelhouse-android-app/pull/1/changes/9cbce9aa7ee4673800c15e82b9b28dc838893493).
+
+## The Eight Accessibility Findings
+
+This section describes the 8 WCAG failures I found while auditing the user flow.
+
+| WCAG Criterion                                                                                                         | Finding                                                                                                                                                                                                 |
+| ---------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [1.1.1 Non-text Content](https://www.w3.org/TR/WCAG22/#non-text-content)                                               | Decorative arrow up and down icons for expandable sections are exposed on TalkBack. The arrow icon in the chart explanation is announced on TalkBack as “arrow” instead of its meaning.                 |
+| [1.3.1 Info and Relationships](https://www.w3.org/TR/WCAG22/#info-and-relationships)                                   | The card heading isn’t announced on TalkBack as a heading. List items on TalkBack aren’t announcing their position.                                                                                     |
+| [1.4.3 Contrast (Minimum)](https://www.w3.org/TR/WCAG22/#contrast-minimum)                                             | Subtext that starts with “Sold $3.10…” doesn’t match the required color contrast ratio                                                                                                                  |
+| [1.4.4 Resize Text](https://www.w3.org/TR/WCAG22/#resize-text)                                                         | At 200% text scaling, a space is missing between the left and right sides of the chart header.                                                                                                          |
+| [1.4.11 Non-text Contrast](https://www.w3.org/TR/WCAG22/#non-text-contrast)                                            | “Delta” on the left side of the bar chart doesn’t match the required color contrast ratio. The focus indicator with an external keyboard also fails color contrast.                                     |
+| [2.4.6 Headings and Labels](https://www.w3.org/TR/WCAG22/#headings-and-labels)                                         | Badge label “41m” announces on TalkBack as “41 meters” instead of “41 minutes”.                                                                                                                         |
+| [3.3.4 Error Prevention (Legal, Financial, Data)](https://www.w3.org/TR/WCAG22/#error-prevention-legal-financial-data) | “Exit now” and “Snooze” buttons don’t provide a way to reverse or confirm action before it is submitted.                                                                                                |
+| [4.1.2 Name, Role, Value](https://www.w3.org/TR/WCAG22/#name-role-value)                                               | “Exit now”, “Hold”, and “Snooze” buttons are missing button role. Expandable “Why the engineer wants this (3)” button is missing expanded/collapsed state. List items aren’t announcing their position. |
+
+In my original audit, I identified
+[WCAG 1.3.4 (Orientation)](https://www.w3.org/TR/WCAG22/#orientation) as a
+failure because I couldn’t rotate the app into landscape orientation. When I
+revisited the issue, I discovered that my phone's developer mode, not the app,
+caused the restriction. The app itself did not restrict the display orientation.
+I therefore removed this finding from the set of confirmed WCAG failures.
 
 ## What does this mean for developers using AI?
 
