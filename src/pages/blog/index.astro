@@ -75,8 +75,12 @@ const description =
     max-inline-size: var(--measure);
   }
 
+  /* Post titles run long, and balance splits them into even halves that
+     leave each line half empty. pretty fills the line and only adjusts the
+     break to avoid a lone last word, the same as on the post itself. */
   .post-list__item h2 {
     font-size: var(--step-2);
+    text-wrap: pretty;
   }
 
   .post-list__item h2 a {
