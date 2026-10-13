@@ -4,6 +4,7 @@ import sitemap from '@astrojs/sitemap';
 import { satteri } from '@astrojs/markdown-satteri';
 import externalLinksNewTab from './src/lib/external-links-new-tab.mjs';
 import paintedListMarkers from './src/lib/painted-list-markers.mjs';
+import scrollableTables from './src/lib/scrollable-tables.mjs';
 
 // www is canonical. The apex redirects to it at the DNS/GitHub Pages layer,
 // so every absolute URL the build emits — sitemap, RSS, canonical tags —
@@ -21,9 +22,10 @@ export default defineConfig({
   markdown: {
     // Markdown gets the same treatment as hand-written markup: bulleted
     // lists with painted bullets, so VoiceOver does not announce "bullet",
-    // and off-site links that open in a new tab.
+    // off-site links that open in a new tab, and tables that scroll inside
+    // their own box rather than widening the page.
     processor: satteri({
-      hastPlugins: [paintedListMarkers, externalLinksNewTab],
+      hastPlugins: [paintedListMarkers, externalLinksNewTab, scrollableTables],
     }),
   },
   build: {
